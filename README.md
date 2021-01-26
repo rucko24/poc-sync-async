@@ -1,4 +1,6 @@
-# Demo sync vs async
+# Poc sync asyn frecuency with Vaadin flow 14, a basic example.
+
+More [info](https://rubn0x52.com/2021/01/25/Sync-vs-Async.html)
 
 This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.
 It contains all the necessary configuration and some placeholder files to get you started.
@@ -41,4 +43,4 @@ You can now also attach break points in code for debugging purposes, by clicking
 - Follow the tutorials in [vaadin.com/tutorials](https://vaadin.com/tutorials). Especially [vaadin.com/tutorials/getting-started-with-flow](https://vaadin.com/tutorials/getting-started-with-flow) is good for getting a grasp of the basic Vaadin concepts.
 - Read the documentation in [vaadin.com/docs](https://vaadin.com/docs).
 - For a bigger Vaadin application example, check out the Full Stack App starter from [vaadin.com/start](https://vaadin.com/start).
-# Poc sync asyn frecuency with Vaadin flow 14, a basic example
+

@@ -3,7 +3,7 @@ package com.simualation.syncvsasync.views.helloworld;
 import com.simualation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simualation.syncvsasync.service.MemoryConsumption;
 import com.simualation.syncvsasync.service.SyncRandomNumbers;
-import com.simualation.syncvsasync.service.AsyncRandomNumbersWithFlux;
+import com.simualation.syncvsasync.service.ReactiveRandomNumbers;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Paragraph;
@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongFunction;
 import java.util.stream.Stream;
@@ -46,19 +44,19 @@ public class SyncVsAsync extends VerticalLayout {
     private SyncRandomNumbers syncRandomNumbers;
 
     /**
-     * Async version
+     * Reactive version
      */
-    private AsyncRandomNumbersWithFlux asyncRandomNumbersWithFlux;
+    private ReactiveRandomNumbers reactiveRandomNumbers;
 
     private MemoryConsumption memoryConsumption;
 
     @Autowired
     public SyncVsAsync(SyncRandomNumbers syncRandomNumbers,
-                       AsyncRandomNumbersWithFlux asyncRandomNumbersWithFlux,
+                       ReactiveRandomNumbers reactiveRandomNumbers,
                        final MemoryConsumption memoryConsumption) {
 
         this.syncRandomNumbers = syncRandomNumbers;
-        this.asyncRandomNumbersWithFlux = asyncRandomNumbersWithFlux;
+        this.reactiveRandomNumbers = reactiveRandomNumbers;
         this.memoryConsumption = memoryConsumption;
 
         this.initLayout();
@@ -69,7 +67,7 @@ public class SyncVsAsync extends VerticalLayout {
 
         syncComboBox.setLabel("Sync frecuency");
         asyncComboBoxWithCompletableFuture.setLabel("Async frecuency with CompletableFuture");
-        reactiveComboBox.setLabel("Async frecuency with Project reactor");
+        reactiveComboBox.setLabel("Reactive frecuency with Project reactor");
         asyncComboBoxWithCompletableFuture.setWidthFull();
         syncComboBox.setItems(EnumSizeForRandomNumbers.values());
         reactiveComboBox.setItems(EnumSizeForRandomNumbers.values());
@@ -79,13 +77,10 @@ public class SyncVsAsync extends VerticalLayout {
                 .forEach(e -> {
                     e.setPlaceholder("Choose stream size");
                     e.setWidth("50%");
+                    e.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
                 });
-        syncComboBox.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
-        reactiveComboBox.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
-        asyncComboBoxWithCompletableFuture.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
 
         this.initSyncFrecuency();
-
         this.add(syncComboBox, asyncComboBoxWithCompletableFuture, reactiveComboBox);
     }
 
@@ -98,31 +93,24 @@ public class SyncVsAsync extends VerticalLayout {
 
     }
 
-    private void initWithCompletableFuture(final Optional<UI> optionalUI) {
+    private void initWithCompletableFuture(final UI ui) {
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
             CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()))
                     .whenCompleteAsync((map, error) -> {
-                        optionalUI.ifPresent(ui -> {
-                            ui.access(() -> {
-                                this.execute(event.getValue().getSize(),
-                                        e -> map);
-                            });
+                        ui.access(() -> {
+                            this.execute(event.getValue().getSize(), e -> map);
                         });
                     });
         });
     }
 
-    private void initAsyncFrecuencyWithFlux(final Optional<UI> optionalUI) {
+    private void initReactiveFrecuency(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
-            Flux.defer(() -> this.asyncRandomNumbersWithFlux.fluxFrecuency(event.getValue().getSize()))
-                    .delayElements(Duration.ofMillis(10))
+            Flux.defer(() -> this.reactiveRandomNumbers.fluxFrecuency(event.getValue().getSize()))
                     .subscribeOn(Schedulers.boundedElastic())
                     .subscribe(subscripbeMap -> {
-                        optionalUI.ifPresent(ui -> {
-                            ui.access(() -> {
-                                this.execute(event.getValue().getSize(),
-                                        e -> subscripbeMap);
-                            });
+                        ui.access(() -> {
+                            this.execute(event.getValue().getSize(), e -> subscripbeMap);
                         });
                     });
         });
@@ -133,27 +121,29 @@ public class SyncVsAsync extends VerticalLayout {
             final Paragraph p1 = new Paragraph("Generated Five millions iterations");
             final Paragraph p2 = new Paragraph(funciontFrecuency.apply(size).toString());
             final Paragraph p3 = new Paragraph(this.memoryConsumption.getTotalMemory());
-            final Notification n = new Notification(p1,p2,p3) ;
+            final Notification n = new Notification(p1, p2, p3);
             n.setPosition(Position.MIDDLE);
             n.setDuration(2500);
             n.open();
-            System.gc();
         } else {
             final Paragraph p1 = new Paragraph("Generated Ten millions iterations");
             final Paragraph p2 = new Paragraph(funciontFrecuency.apply(size).toString());
             final Paragraph p3 = new Paragraph(this.memoryConsumption.getTotalMemory());
-            final Notification n = new Notification(p1,p2,p3) ;
+            final Notification n = new Notification(p1, p2, p3);
             n.setPosition(Position.MIDDLE);
             n.setDuration(2500);
             n.open();
-            System.gc();
         }
     }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-        this.initAsyncFrecuencyWithFlux(this.getUI());
-        this.initWithCompletableFuture(this.getUI());
+
+        this.getUI().ifPresent(ui -> {
+            this.initReactiveFrecuency(ui);
+            this.initWithCompletableFuture(ui);
+        });
+
     }
 }
