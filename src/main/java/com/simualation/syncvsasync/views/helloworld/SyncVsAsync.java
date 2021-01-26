@@ -104,8 +104,7 @@ public class SyncVsAsync extends VerticalLayout {
                     .whenCompleteAsync((map, error) -> {
                         optionalUI.ifPresent(ui -> {
                             ui.access(() -> {
-                                this.execute(event.getValue().getSize(),
-                                        e -> map);
+                                this.execute(event.getValue().getSize(), e -> map);
                             });
                         });
                     });
@@ -120,8 +119,7 @@ public class SyncVsAsync extends VerticalLayout {
                     .subscribe(subscripbeMap -> {
                         optionalUI.ifPresent(ui -> {
                             ui.access(() -> {
-                                this.execute(event.getValue().getSize(),
-                                        e -> subscripbeMap);
+                                this.execute(event.getValue().getSize(), e -> subscripbeMap);
                             });
                         });
                     });
@@ -137,7 +135,6 @@ public class SyncVsAsync extends VerticalLayout {
             n.setPosition(Position.MIDDLE);
             n.setDuration(2500);
             n.open();
-            System.gc();
         } else {
             final Paragraph p1 = new Paragraph("Generated Ten millions iterations");
             final Paragraph p2 = new Paragraph(funciontFrecuency.apply(size).toString());
@@ -146,7 +143,6 @@ public class SyncVsAsync extends VerticalLayout {
             n.setPosition(Position.MIDDLE);
             n.setDuration(2500);
             n.open();
-            System.gc();
         }
     }
 
