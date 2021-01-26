@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  *
  */
 @Service
-public class AsyncRandomNumbersWithFlux {
+public class ReactiveRandomNumbers {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final int RANDOM_NUMBER_ORIGIN = 1;
