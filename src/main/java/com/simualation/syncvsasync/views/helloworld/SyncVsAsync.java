@@ -137,7 +137,6 @@ public class SyncVsAsync extends VerticalLayout {
             n.setPosition(Position.MIDDLE);
             n.setDuration(2500);
             n.open();
-            System.gc();
         }
     }
 
