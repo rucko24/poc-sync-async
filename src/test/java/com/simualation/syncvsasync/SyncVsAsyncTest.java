@@ -2,7 +2,10 @@ package com.simualation.syncvsasync;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -13,7 +16,9 @@ import java.util.function.Predicate;
 /**
  * Simple test for map with StepVerifier
  */
-@SpringBootTest
+@Log4j2
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration
 class SyncVsAsyncTest {
 
     @Test
