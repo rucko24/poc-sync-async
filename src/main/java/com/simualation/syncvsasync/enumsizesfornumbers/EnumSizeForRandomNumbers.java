@@ -1,7 +1,7 @@
 package com.simualation.syncvsasync.enumsizesfornumbers;
 
 /**
- *
+ * @author rubn
  */
 public enum EnumSizeForRandomNumbers {
 

@@ -2,6 +2,9 @@ package com.simualation.syncvsasync.service;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * @author rubn
+ */
 @Service
 public class MemoryConsumption {
 
