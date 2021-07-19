@@ -1,12 +1,14 @@
 package com.simualation.syncvsasync.service;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author rubn
+ */
 @Service
 public class SyncRandomNumbers {
 
@@ -22,7 +24,7 @@ public class SyncRandomNumbers {
     public Map<Integer, Long> syncFrencuency(Long size) {
         return SECURE_RANDOM.ints(size, RANDOM_NUMBER_ORIGIN, RANDOM_NUMBER_BOUND)
                 .boxed()
-                .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+                .collect(Collectors.groupingByConcurrent(e -> e, Collectors.counting()));
     }
 
 }
