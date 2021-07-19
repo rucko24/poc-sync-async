@@ -1,9 +1,9 @@
-package com.simualation.syncvsasync.views.helloworld;
+package com.simulation.syncvsasync.views.helloworld;
 
-import com.simualation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
-import com.simualation.syncvsasync.service.MemoryConsumption;
-import com.simualation.syncvsasync.service.SyncRandomNumbers;
-import com.simualation.syncvsasync.service.ReactiveRandomNumbers;
+import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
+import com.simulation.syncvsasync.service.MemoryConsumption;
+import com.simulation.syncvsasync.service.SyncRandomNumbers;
+import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Paragraph;
@@ -12,7 +12,7 @@ import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.simualation.syncvsasync.views.main.MainView;
+import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,4 +1,4 @@
-package com.simualation.syncvsasync.views.main;
+package com.simulation.syncvsasync.views.main;
 
 import java.util.Optional;
 
@@ -20,8 +20,8 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
-import com.simualation.syncvsasync.views.helloworld.SyncVsAsync;
-import com.simualation.syncvsasync.views.about.AboutView;
+import com.simulation.syncvsasync.views.helloworld.SyncVsAsync;
+import com.simulation.syncvsasync.views.about.AboutView;
 
 /**
  * The main view is a top-level placeholder for other views.

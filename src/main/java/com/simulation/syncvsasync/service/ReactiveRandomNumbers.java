@@ -1,4 +1,4 @@
-package com.simualation.syncvsasync.service;
+package com.simulation.syncvsasync.service;
 
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

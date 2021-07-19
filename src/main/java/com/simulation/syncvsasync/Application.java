@@ -1,4 +1,4 @@
-package com.simualation.syncvsasync;
+package com.simulation.syncvsasync;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.simualation.syncvsasync.enumsizesfornumbers;
+package com.simulation.syncvsasync.enumsizesfornumbers;
 
 /**
  * @author rubn
