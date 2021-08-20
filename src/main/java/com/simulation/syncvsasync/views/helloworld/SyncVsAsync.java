@@ -16,7 +16,7 @@ import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +50,7 @@ public class SyncVsAsync extends VerticalLayout {
     private final MemoryConsumption memoryConsumption;
 
     @PostConstruct
-    private void initLayout() {
+    public void initLayout() {
         syncComboBox.focus();
 
         syncComboBox.setLabel("Sync frecuency");
@@ -65,6 +65,7 @@ public class SyncVsAsync extends VerticalLayout {
                 .forEach(e -> {
                     e.setPlaceholder("Choose stream size");
                     e.setWidth("50%");
+                    e.setClearButtonVisible(true);
                     e.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
                 });
 
@@ -76,7 +77,6 @@ public class SyncVsAsync extends VerticalLayout {
         syncComboBox.addValueChangeListener(event -> {
             this.execute(event.getValue().getSize(),
                     e -> syncRandomNumbers.syncFrencuency(event.getValue().getSize()));
-
         });
     }
 
@@ -93,13 +93,17 @@ public class SyncVsAsync extends VerticalLayout {
 
     private void initReactiveFrecuency(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
-            Flux.defer(() -> this.reactiveRandomNumbers.fluxFrecuency(event.getValue().getSize()))
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .subscribe(subscripbeMap -> {
-                        ui.access(() -> {
-                            this.execute(event.getValue().getSize(), e -> subscripbeMap);
+            if (event.getValue() != null) {
+                Mono.defer(()  -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
+                        .doOnEach(signal -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
+                        .subscribeOn(Schedulers.boundedElastic())
+                        .subscribe(subscribeMap -> {
+                            ui.access(() -> {
+                                log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
+                                this.execute(event.getValue().getSize(), e -> subscribeMap);
+                            });
                         });
-                    });
+            }
         });
     }
 
