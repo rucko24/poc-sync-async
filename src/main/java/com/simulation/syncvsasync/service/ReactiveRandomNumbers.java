@@ -1,7 +1,7 @@
 package com.simulation.syncvsasync.service;
 
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
 import java.util.Map;
@@ -20,10 +20,10 @@ public class ReactiveRandomNumbers {
     /**
      *
      * @param size of stream
-     * @return Flux<Map<Integer,Long>>
+     * @return Mono<Map<Integer,Long>>
      */
-    public Flux<Map<Integer, Long>> fluxFrecuency(Long size) {
-        return Flux.just(SECURE_RANDOM.ints(size, RANDOM_NUMBER_ORIGIN, RANDOM_NUMBER_BOUND)
+    public Mono<Map<Integer, Long>> monoFrecuency(Long size) {
+        return Mono.just(SECURE_RANDOM.ints(size, RANDOM_NUMBER_ORIGIN, RANDOM_NUMBER_BOUND)
                 .boxed()
                 .collect(Collectors.groupingBy(e -> e, Collectors.counting())));
     }
