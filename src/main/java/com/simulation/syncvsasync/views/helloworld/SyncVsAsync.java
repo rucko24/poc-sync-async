@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @author rubn
  */
 @Log4j2
-@Route(value = "Sync-vs-Async", layout = MainView.class)
+@Route(value = "sync-vs-async", layout = MainView.class)
 @PageTitle("Execute frecuency sync vs async")
 @RouteAlias(value = "", layout = MainView.class)
 @RequiredArgsConstructor
