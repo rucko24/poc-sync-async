@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -28,4 +29,22 @@ public class ReactiveRandomNumbers {
                 .collect(Collectors.groupingBy(e -> e, Collectors.counting())));
     }
 
+    /**
+     * Publisher with blocking call inside.
+     *
+     * @param size of stream
+     * @return Mono<Map<Integer, Long>>
+     */
+    public Mono<Map<Integer, Long>> monoWithBlockingCallInside(final Long size) {
+        return this.monoFrecuency(size)
+                .delayElement(Duration.ofMillis(100))
+                .map(item -> {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    return item;
+                });
+    }
 }
