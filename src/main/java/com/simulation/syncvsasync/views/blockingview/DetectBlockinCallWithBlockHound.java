@@ -8,7 +8,6 @@ import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -23,7 +22,6 @@ import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -71,7 +69,7 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout {
                 Mono.fromCallable(() ->
                                 this.service.monoWithBlockingCallInside(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
                         .doOnEach(signal -> log.info("Threand name: {}", Thread.currentThread().getName()))
-                        //Detectad with BlockHound
+                        //Detected error with BlockHound
                         .onErrorContinue((Throwable error, Object o) -> {
                             log.error("Error -> {} {}", value.getValue(), error);
                             ui.access(() -> {
@@ -81,11 +79,12 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout {
                                 n.open();
                             });
                         })
-                        //Set a Scheduler in runtime
+                        //Set a Scheduler at runtime
                         .subscribeOn(value.getValue())
                         .subscribe(monoMap -> {
                             ui.access(() -> Notification.show("Map: " + monoMap));
                         });
+
             }
         });
     }
