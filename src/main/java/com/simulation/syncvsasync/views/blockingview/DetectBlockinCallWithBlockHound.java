@@ -2,6 +2,7 @@ package com.simulation.syncvsasync.views.blockingview;
 
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
+import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
@@ -32,8 +33,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @PageTitle("BlockHound")
 @RequiredArgsConstructor
 public class DetectBlockinCallWithBlockHound extends VerticalLayout {
-
+    //
     private final ReactiveRandomNumbers service;
+    private final SyncRandomNumbers syncRandomNumbers;
     private final ComboBox<Scheduler> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
 
     @PostConstruct
@@ -64,29 +66,28 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout {
      * @param ui the ui for concurrency access
      */
     private void makeCall(final UI ui) {
+        this.schedulersComboBox.setPreventInvalidInput(true);
+        this.schedulersComboBox.setAllowCustomValue(false);
         this.schedulersComboBox.addValueChangeListener(value -> {
             if (Objects.nonNull(value)) {
                 Mono.fromCallable(() ->
-                                this.service.monoWithBlockingCallInside(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
+                                Mono.just(this.syncRandomNumbers.syncFrencuency(EnumSizeForRandomNumbers.TEN_MILLION.getSize())))
                         .subscribeOn(value.getValue())
                         //Detected error with BlockHound
-                        //.onErrorContinue((Throwable error, Object o) -> {
-                        //    log.error("Error -> {} {}", value.getValue(), error);
-                        //    ui.access(() -> {
-                        //        final Notification n = new Notification(value.getValue() + " " + error);
-                        //        n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                        //        n.setDuration(2500);
-                        //        n.open();
-                        //    });
-                        //})
+                        .onErrorContinue((Throwable error, Object o) -> {
+                            log.error("Error -> {} {}", value.getValue(), error);
+                            ui.access(() -> {
+                                final Notification n = new Notification(value.getValue() + " " + error);
+                                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                                n.setDuration(2500);
+                                n.open();
+                            });
+                        })
                         //Set a Scheduler at runtime
                         .doOnEach(signal -> log.info("Thread name: {}", Thread.currentThread().getName()))
+                        .flatMap(mapMono -> Mono.defer(() -> mapMono))
                         .subscribe(monoMap -> {
-                            Mono.defer(() -> monoMap)
-                                    //.subscribeOn(Schedulers.boundedElastic())
-                                    .subscribe(resulta -> {
-                                        ui.access(() -> Notification.show("Map: " + resulta));
-                                    });
+                            ui.access(() -> Notification.show("Map: " + monoMap));
                         });
 
             }
