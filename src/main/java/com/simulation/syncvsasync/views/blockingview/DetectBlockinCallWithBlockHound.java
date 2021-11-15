@@ -34,7 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DetectBlockinCallWithBlockHound extends VerticalLayout {
 
     private final ReactiveRandomNumbers service;
-    private final ComboBox<Scheduler> schedulersComboBox = new ComboBox<>();
+    private final ComboBox<Scheduler> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
 
     @PostConstruct
     public void init() {
@@ -68,21 +68,25 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout {
             if (Objects.nonNull(value)) {
                 Mono.fromCallable(() ->
                                 this.service.monoWithBlockingCallInside(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
-                        .doOnEach(signal -> log.info("Threand name: {}", Thread.currentThread().getName()))
-                        //Detected error with BlockHound
-                        .onErrorContinue((Throwable error, Object o) -> {
-                            log.error("Error -> {} {}", value.getValue(), error);
-                            ui.access(() -> {
-                                final Notification n = new Notification(value.getValue() + " " + error);
-                                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                                n.setDuration(2500);
-                                n.open();
-                            });
-                        })
-                        //Set a Scheduler at runtime
                         .subscribeOn(value.getValue())
+                        //Detected error with BlockHound
+                        //.onErrorContinue((Throwable error, Object o) -> {
+                        //    log.error("Error -> {} {}", value.getValue(), error);
+                        //    ui.access(() -> {
+                        //        final Notification n = new Notification(value.getValue() + " " + error);
+                        //        n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        //        n.setDuration(2500);
+                        //        n.open();
+                        //    });
+                        //})
+                        //Set a Scheduler at runtime
+                        .doOnEach(signal -> log.info("Thread name: {}", Thread.currentThread().getName()))
                         .subscribe(monoMap -> {
-                            ui.access(() -> Notification.show("Map: " + monoMap));
+                            Mono.defer(() -> monoMap)
+                                    //.subscribeOn(Schedulers.boundedElastic())
+                                    .subscribe(resulta -> {
+                                        ui.access(() -> Notification.show("Map: " + resulta));
+                                    });
                         });
 
             }
