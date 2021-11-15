@@ -30,7 +30,7 @@ class UsingBlockHoundTest {
     }
 
     @Test
-    @DisplayName("Blocking call! linea 39")
+    @DisplayName("Blocking call! in line 38")
     void detectBlockingCall1() {
         StepVerifier.create(Mono.just(1)
                 .doOnNext(e -> this.blockMe())
@@ -40,7 +40,7 @@ class UsingBlockHoundTest {
     }
 
     @Test
-    @DisplayName("Blocking call! in line 46")
+    @DisplayName("Blocking call! in line 47")
     void detectBlockingCall2() {
         StepVerifier.create(this.reactiveRandomNumbers.monoWithBlockingCallInside(500L)
                         .subscribeOn(Schedulers.parallel()))
