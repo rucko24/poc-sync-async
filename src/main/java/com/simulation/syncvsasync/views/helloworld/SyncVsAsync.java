@@ -76,8 +76,16 @@ public class SyncVsAsync extends VerticalLayout {
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
             if(event.getValue() != null) {
-                this.execute(event.getValue().getSize(),
-                        e -> syncRandomNumbers.syncFrencuency(event.getValue().getSize()));
+                final var map = event.getValue();
+                this.execute(map.getSize(), e -> {
+                    final var result = syncRandomNumbers.syncFrencuency(map.getSize());
+                    log.info("Result map: {}", result);
+                    log.info("Daemon: {}", Thread.currentThread().isDaemon());
+                    log.info("Thread name: {}", Thread.currentThread().getName());
+                    log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
+                    log.info("Thread state: {}", Thread.currentThread().getState());
+                    return result;
+                });
             }
         });
     }
@@ -92,6 +100,7 @@ public class SyncVsAsync extends VerticalLayout {
                                 log.info("Daemon: {}", Thread.currentThread().isDaemon());
                                 log.info("Thread name: {}", Thread.currentThread().getName());
                                 log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
+                                log.info("Thread state: {}", Thread.currentThread().getState());
                                 this.execute(event.getValue().getSize(), e -> map);
                             });
                         });
@@ -107,6 +116,11 @@ public class SyncVsAsync extends VerticalLayout {
                         .subscribeOn(Schedulers.boundedElastic())
                         .subscribe(subscribeMap -> {
                             ui.access(() -> {
+                                log.info("Result map: {}", subscribeMap);
+                                log.info("Daemon: {}", Thread.currentThread().isDaemon());
+                                log.info("Thread name: {}", Thread.currentThread().getName());
+                                log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
+                                log.info("Thread state: {}", Thread.currentThread().getState());
                                 log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
                                 this.execute(event.getValue().getSize(), e -> subscribeMap);
                             });
