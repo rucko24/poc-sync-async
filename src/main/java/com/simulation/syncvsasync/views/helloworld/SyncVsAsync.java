@@ -75,23 +75,27 @@ public class SyncVsAsync extends VerticalLayout {
 
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
-            this.execute(event.getValue().getSize(),
-                    e -> syncRandomNumbers.syncFrencuency(event.getValue().getSize()));
+            if(event.getValue() != null) {
+                this.execute(event.getValue().getSize(),
+                        e -> syncRandomNumbers.syncFrencuency(event.getValue().getSize()));
+            }
         });
     }
 
     private void initWithCompletableFuture(final UI ui) {
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
-            CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()))
-                    .whenCompleteAsync((map, error) -> {
-                        ui.access(() -> {
-                            log.info("Result map: {}", map);
-                            log.info("Daemon: {}", Thread.currentThread().isDaemon());
-                            log.info("Thread name: {}", Thread.currentThread().getName());
-                            log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
-                            this.execute(event.getValue().getSize(), e -> map);
+            if(event.getValue() != null) {
+                CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()))
+                        .whenCompleteAsync((map, error) -> {
+                            ui.access(() -> {
+                                log.info("Result map: {}", map);
+                                log.info("Daemon: {}", Thread.currentThread().isDaemon());
+                                log.info("Thread name: {}", Thread.currentThread().getName());
+                                log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
+                                this.execute(event.getValue().getSize(), e -> map);
+                            });
                         });
-                    });
+            }
         });
     }
 
