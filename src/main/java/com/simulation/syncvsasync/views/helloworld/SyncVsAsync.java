@@ -85,6 +85,10 @@ public class SyncVsAsync extends VerticalLayout {
             CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()))
                     .whenCompleteAsync((map, error) -> {
                         ui.access(() -> {
+                            log.info("Result map: {}", map);
+                            log.info("Daemon: {}", Thread.currentThread().isDaemon());
+                            log.info("Thread name: {}", Thread.currentThread().getName());
+                            log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
                             this.execute(event.getValue().getSize(), e -> map);
                         });
                     });
