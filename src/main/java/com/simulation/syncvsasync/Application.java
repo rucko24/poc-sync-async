@@ -12,7 +12,7 @@ import reactor.blockhound.BlockHound;
 /**
  * The entry point of the Spring Boot application.
  */
-@PWA(name = "Demo sync vs async", shortName = "Demo sync vs async")
+@PWA(name = "Demo sync - async - reactive", shortName = "sync-async-reactive")
 @SpringBootApplication
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 @Push

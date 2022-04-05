@@ -29,11 +29,11 @@ import java.util.stream.Stream;
  * @author rubn
  */
 @Log4j2
-@Route(value = "sync-vs-async", layout = MainView.class)
-@PageTitle("Execute frecuency sync vs async")
+@Route(value = "sync-async-reactive", layout = MainView.class)
+@PageTitle("Execute frecuency sync - async - reactive")
 @RouteAlias(value = "", layout = MainView.class)
 @RequiredArgsConstructor
-public class SyncVsAsync extends VerticalLayout {
+public class SyncAsyncReactiveView extends VerticalLayout {
 
     private final ComboBox<EnumSizeForRandomNumbers> syncComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();

@@ -14,13 +14,12 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.simulation.syncvsasync.views.helloworld.SyncVsAsync;
+import com.simulation.syncvsasync.views.helloworld.SyncAsyncReactiveView;
 import com.simulation.syncvsasync.views.about.AboutView;
 
 /**
@@ -65,7 +64,7 @@ public class MainView extends AppLayout {
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         logoLayout.add(new Image("images/logo.png", "Demo sync vs async logo"));
-        logoLayout.add(new H1("Demo sync vs async"));
+        logoLayout.add(new H1("Demo"));
         layout.add(logoLayout, menu);
         return layout;
     }
@@ -80,9 +79,9 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Sync vs Async", SyncVsAsync.class),
-                createTab("About", AboutView.class),
-                createTab("BlockHound", DetectBlockinCallWithBlockHound.class)};
+        return new Tab[]{createTab("Sync - Async - Reactive", SyncAsyncReactiveView.class),
+                createTab("BlockHound", DetectBlockinCallWithBlockHound.class),
+                createTab("About", AboutView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
