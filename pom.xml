@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <vaadin.version>14.4.6</vaadin.version>
+        <vaadin.version>22.0.1</vaadin.version>
         <log4j2.version>2.17.2</log4j2.version>
     </properties>
 
@@ -24,7 +24,7 @@
         <version>2.6.6</version>
     </parent>
 
-    <repositories>
+  <repositories>
         <!-- The order of definitions matters. Explicitly defining central here to make sure it has the highest priority. -->
 
         <!-- Main Maven repository -->
@@ -34,6 +34,12 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
         </repository>
         <!-- Repository used by many Vaadin add-ons -->
         <repository>
@@ -46,7 +52,7 @@
     </repositories>
 
     <pluginRepositories>
-        <!-- Main Maven repository -->
+        <!-- The order of definitions matters. Explicitly defining central here to make sure it has the highest priority. -->
         <pluginRepository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
@@ -54,7 +60,14 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+        </pluginRepository>
     </pluginRepositories>
+
 
     <dependencyManagement>
         <dependencies>
@@ -185,7 +198,7 @@
 
     </dependencies>
 
-    <build>
+<build>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
@@ -212,6 +225,7 @@
                     <execution>
                         <goals>
                             <goal>prepare-frontend</goal>
+                            <goal>build-frontend</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -305,6 +319,36 @@
                 </plugins>
             </build>
         </profile>
-
+        
+        <!-- Deploy to Heroku 👍-->
+        <profile>
+            <id>npm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <!-- Use the latest released version:
+                        https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+                        <version>1.9.1</version>
+                        <executions>
+                            <execution>
+                                <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <!-- optional: default phase is "generate-resources" -->
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <nodeVersion>v12.13.0</nodeVersion>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+             
     </profiles>
 </project>

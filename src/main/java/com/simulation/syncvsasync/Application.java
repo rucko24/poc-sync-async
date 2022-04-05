@@ -1,20 +1,26 @@
 package com.simulation.syncvsasync;
 
+import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.server.PWA;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.vaadin.artur.helpers.LaunchUtil;
 import reactor.blockhound.BlockHound;
 
 /**
  * The entry point of the Spring Boot application.
  */
+@PWA(name = "Demo sync vs async", shortName = "Demo sync vs async")
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+@NpmPackage(value = "line-awesome", version = "1.3.0")
+@Push
+public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(String... args) {
         BlockHound.install();
-        LaunchUtil.launchBrowserInDevelopmentMode(SpringApplication.run(Application.class, args));
+        SpringApplication.run(Application.class, args);
     }
 
 }
