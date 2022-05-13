@@ -1,15 +1,19 @@
 package com.simulation.syncvsasync.views.helloworld;
 
+import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulers;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simulation.syncvsasync.service.MemoryConsumption;
 import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
+import com.simulation.syncvsasync.util.NotificationsUtils;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.simulation.syncvsasync.views.main.MainView;
@@ -17,13 +21,16 @@ import com.vaadin.flow.router.RouteAlias;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Stream;
+
 
 /**
  * @author rubn
@@ -33,11 +40,17 @@ import java.util.stream.Stream;
 @PageTitle("Execute frecuency sync - async - reactive")
 @RouteAlias(value = "", layout = MainView.class)
 @RequiredArgsConstructor
-public class SyncAsyncReactiveView extends VerticalLayout {
+public class SyncAsyncReactiveView extends VerticalLayout implements NotificationsUtils {
 
     private final ComboBox<EnumSizeForRandomNumbers> syncComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> asyncComboBoxWithCompletableFuture = new ComboBox<>();
+    private final RadioButtonGroup<AllReactorSchedulers> radioButtonGroup = new RadioButtonGroup<>();
+
+    /**
+     * All Schedulers here!
+     */
+    private final HorizontalLayout rowSchedulers = new HorizontalLayout();
 
     /**
      * Sync version
@@ -59,8 +72,10 @@ public class SyncAsyncReactiveView extends VerticalLayout {
         asyncComboBoxWithCompletableFuture.setWidthFull();
         syncComboBox.setItems(EnumSizeForRandomNumbers.values());
         reactiveComboBox.setItems(EnumSizeForRandomNumbers.values());
+        radioButtonGroup.setItems(AllReactorSchedulers.values());
+        radioButtonGroup.setValue(AllReactorSchedulers.BOUNDED_ELASTIC);
+        radioButtonGroup.setRenderer(AllReactorSchedulers.getIconRenderer());
         asyncComboBoxWithCompletableFuture.setItems(EnumSizeForRandomNumbers.values());
-
         Stream.of(syncComboBox, reactiveComboBox, asyncComboBoxWithCompletableFuture)
                 .forEach(e -> {
                     e.setPlaceholder("Choose stream size");
@@ -68,42 +83,50 @@ public class SyncAsyncReactiveView extends VerticalLayout {
                     e.setClearButtonVisible(true);
                     e.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
                 });
-
         this.initSyncFrecuency();
-        this.add(syncComboBox, asyncComboBoxWithCompletableFuture, reactiveComboBox);
+        this.rowSchedulers.add(radioButtonGroup);
+        this.rowSchedulers.setWidthFull();
+        final VerticalLayout verticalLayout = new VerticalLayout(reactiveComboBox, this.rowSchedulers);
+        reactiveComboBox.setWidthFull();
+        //Clear reactive combo
+        verticalLayout.setWidth("50%");
+        verticalLayout.getStyle().set("border", "2px solid #e9ebef");
+        verticalLayout.getStyle().set("border-radius", "10px");
+        this.add(syncComboBox, asyncComboBoxWithCompletableFuture, verticalLayout);
     }
 
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
-            if(event.getValue() != null) {
-                final var map = event.getValue();
-                this.execute(map.getSize(), e -> {
-                    final var result = syncRandomNumbers.syncFrencuency(map.getSize());
-                    log.info("Result map: {}", result);
-                    log.info("Daemon: {}", Thread.currentThread().isDaemon());
-                    log.info("Thread name: {}", Thread.currentThread().getName());
-                    log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
-                    log.info("Thread state: {}", Thread.currentThread().getState());
-                    return result;
-                });
+            if (event.getValue() != null) {
+                try {
+                    final var map = event.getValue();
+                    this.execute(map.getSize(), e -> {
+                        final var result = syncRandomNumbers.syncFrencuency(map.getSize());
+                        this.showLogger(log, result);
+                        return result;
+                    });
+                } catch (Exception ex) {
+                    this.showError(ex.getMessage());
+                }
             }
         });
     }
 
     private void initWithCompletableFuture(final UI ui) {
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
-            if(event.getValue() != null) {
-                CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()))
+            if (event.getValue() != null) {
+                Executor executor = Executors.newFixedThreadPool(100);
+                CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()), executor)
                         .whenCompleteAsync((map, error) -> {
-                            ui.access(() -> {
-                                log.info("Result map: {}", map);
-                                log.info("Daemon: {}", Thread.currentThread().isDaemon());
-                                log.info("Thread name: {}", Thread.currentThread().getName());
-                                log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
-                                log.info("Thread state: {}", Thread.currentThread().getState());
-                                this.execute(event.getValue().getSize(), e -> map);
-                            });
-                        });
+                            if(map != null) {
+                               ui.access(() -> {
+                                    this.showLogger(log, map);
+                                    this.execute(event.getValue().getSize(), e -> map);
+                                });
+                            } else {
+                                ui.access(() -> this.showError(error.getMessage()));
+                            }
+                        }, executor);
             }
         });
     }
@@ -111,16 +134,14 @@ public class SyncAsyncReactiveView extends VerticalLayout {
     private void initReactiveFrecuency(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                Mono.defer(()  -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
+                Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
+                        .subscribeOn(this.radioButtonGroup.getValue().getName())
+                        .flatMap(Function.identity())
+                        .doOnError(error -> ui.access(() -> this.showError(error.getMessage())))
                         .doOnEach(signal -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
-                        .subscribeOn(Schedulers.boundedElastic())
                         .subscribe(subscribeMap -> {
                             ui.access(() -> {
-                                log.info("Result map: {}", subscribeMap);
-                                log.info("Daemon: {}", Thread.currentThread().isDaemon());
-                                log.info("Thread name: {}", Thread.currentThread().getName());
-                                log.info("ThreadGroup: {}", Thread.currentThread().getThreadGroup());
-                                log.info("Thread state: {}", Thread.currentThread().getState());
+                                this.showLogger(log, subscribeMap);
                                 log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
                                 this.execute(event.getValue().getSize(), e -> subscribeMap);
                             });
