@@ -83,7 +83,7 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout implements N
             if (Objects.nonNull(value)) {
                 Mono.fromCallable(() ->
                                 this.reactiveRandomNumbers
-                                        .monoWithBlockingCallInside(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
+                                        .monoFrecuency(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
                         //Set a Scheduler at runtime
                         .subscribeOn(value.getValue())
                         .flatMap(Function.identity())
