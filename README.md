@@ -1,7 +1,18 @@
-# Poc sync async and reactive frecuency with Vaadin flow 14 a basic example.
+![Heroku deploy](https://pyheroku-badge.herokuapp.com/?app=poc-sync-async-reactive&style=flat)
+---
+
+# Poc sync async and reactive frecuency
+
+For this example we're using project reactor and Vaadin flow.
 
 - Blog post [https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html](https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html)
 - https://poc-sync-async-reactive.herokuapp.com/
 
+### 3 Example combobox
 
-![Captura de pantalla de 2022-04-07 23-44-54](https://user-images.githubusercontent.com/17187599/162325225-0b6526a3-d827-4d5c-a169-9c6cc1bab524.png)
+![image](https://user-images.githubusercontent.com/17187599/168399071-462bc641-37f4-4581-8aab-f543d8779b0c.png)
+
+### BlockHound view
+
+![image](https://user-images.githubusercontent.com/17187599/168399288-f53635f8-024a-4a79-9bc1-d9318a696dc5.png)
+
