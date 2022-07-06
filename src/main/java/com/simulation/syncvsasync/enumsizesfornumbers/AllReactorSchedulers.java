@@ -7,6 +7,8 @@ import com.vaadin.flow.function.SerializableBiConsumer;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.concurrent.Executors;
+
 /**
  * The class All reactor Schedulers
  * @author rubn
@@ -16,7 +18,12 @@ public enum AllReactorSchedulers {
     BOUNDED_ELASTIC(Schedulers.boundedElastic()),
     SINGLE(Schedulers.single()),
     IMMEDIATE(Schedulers.immediate()),
-    PARALLEL(Schedulers.parallel());
+    PARALLEL(Schedulers.parallel()),
+    VIRTUAL_THREAD_PER_TASK_EXECUTOR(Schedulers.fromExecutor(Executors.newVirtualThreadPerTaskExecutor())),
+    THREAD_PER_TASK_EXECUTOR(Schedulers.fromExecutor(Executors.newThreadPerTaskExecutor(Thread
+            .ofVirtual()
+            .name("threadPerTaskExecutor-")
+            .factory())));
 
     private Scheduler schedulers;
 
@@ -47,9 +54,17 @@ public enum AllReactorSchedulers {
                 final Span span = new Span();
                 span.setText("Schedulers.immediate()".concat(" 😁"));
                 div.add(span);
-            } else {
+            } else if(scheduler.getName() == VIRTUAL_THREAD_PER_TASK_EXECUTOR.getName()) {
+                final Span span = new Span();
+                span.setText("Executors.newVirtualThreadPerTaskExecutor()"+" 🔥");
+                div.add(span);
+            } else if(scheduler.getName() == PARALLEL.schedulers){
                 final Span span = new Span();
                 span.setText(PARALLEL.getName()+" 😭");
+                div.add(span);
+            } else {
+                final Span span = new Span();
+                span.setText("Executors.newThreadPerTaskExecutor() + factory"+" 🔥");
                 div.add(span);
             }
         };

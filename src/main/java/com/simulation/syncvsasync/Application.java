@@ -19,7 +19,7 @@ import reactor.blockhound.BlockHound;
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(String... args) {
-        BlockHound.install();
+//        BlockHound.install();
         SpringApplication.run(Application.class, args);
     }
 

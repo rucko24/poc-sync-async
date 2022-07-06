@@ -3,10 +3,13 @@ package com.simulation.syncvsasync.views.helloworld;
 import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulers;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simulation.syncvsasync.service.MemoryConsumption;
-import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
+import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.util.NotificationsUtils;
-import com.vaadin.flow.component.*;
+import com.simulation.syncvsasync.views.main.MainView;
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,7 +19,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -116,10 +118,11 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 Executor executor = Executors.newFixedThreadPool(100);
-                CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize()), executor)
+                CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize())
+                                , executor)
                         .whenCompleteAsync((map, error) -> {
-                            if(map != null) {
-                               ui.access(() -> {
+                            if (map != null) {
+                                ui.access(() -> {
                                     this.showLogger(log, map);
                                     this.execute(event.getValue().getSize(), e -> map);
                                 });
@@ -138,7 +141,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
                         .subscribeOn(this.radioButtonGroup.getValue().getName())
                         .flatMap(Function.identity())
                         .doOnError(error -> ui.access(() -> this.showError(error.getMessage())))
-                        .doOnEach(signal -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
+                        .doOnNext(onNext -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
                         .subscribe(subscribeMap -> {
                             ui.access(() -> {
                                 this.showLogger(log, subscribeMap);
