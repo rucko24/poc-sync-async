@@ -6,7 +6,6 @@ import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.util.NotificationsUtils;
 import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;

@@ -1,16 +1,12 @@
 package com.simulation.syncvsasync.views.about;
 
 import com.simulation.syncvsasync.views.main.MainView;
-import com.vaadin.base.devserver.BrowserLauncher;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.shared.Tooltip;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -20,8 +16,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 @Route(value = "about", layout = MainView.class)
 public class AboutView extends VerticalLayout {
 
-    private final Image img = new Image("images/loom.png", "placeholder plant");
-    private final H2 header = new H2("This place intentionally left empty");
+    private final Image img = new Image("images/loom.png", "loom");
     private static final String TARGET_BLANK = "_blank";
     private static final String INNER_HTML = "innerHTML";
     private static final String LOOM_URL = "https://openjdk.org/projects/loom/";
@@ -36,13 +31,7 @@ public class AboutView extends VerticalLayout {
         img.addClickListener(imageClickEvent -> {
             UI.getCurrent().getPage().open(LOOM_URL, TARGET_BLANK);
         });
-        super.add(img);
-
-//
-        super.add(sourceOfThePoc());
-        //
-        super.add(row());
-
+        super.add(img, sourceOfThePoc(), row());
 
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);

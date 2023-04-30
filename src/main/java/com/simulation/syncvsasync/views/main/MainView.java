@@ -78,7 +78,7 @@ public class MainView extends AppLayout {
         return tabs;
     }
 
-    private Component[] createMenuItems() {
+    private Tab[] createMenuItems() {
         return new Tab[]{createTab("Sync - Async - Reactive", SyncAsyncReactiveView.class),
                 createTab("BlockHound", DetectBlockinCallWithBlockHound.class),
                 createTab("About", AboutView.class)};
