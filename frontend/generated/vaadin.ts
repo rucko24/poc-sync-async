@@ -1,3 +1,8 @@
+import './vaadin-featureflags.ts';
+
 import './index';
 
-import '@vaadin/flow-frontend/VaadinDevmodeGizmo.js';
+import 'Frontend/generated/jar-resources/vaadin-dev-tools/vaadin-dev-tools.js';
+
+import { applyTheme } from './theme.js';
+applyTheme(document);

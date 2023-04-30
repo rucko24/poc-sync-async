@@ -1,0 +1,30 @@
+vaadin-scroller[slot="drawer"] {
+  padding: var(--lumo-space-s);
+}
+
+[slot="drawer"]:is(header, footer) {
+  display: flex;
+  align-items: center;
+  gap: var(--lumo-space-s);
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+  min-height: var(--lumo-size-xl);
+  box-sizing: border-box;
+}
+
+[slot="drawer"]:is(header, footer):is(:empty) {
+  display: none;
+}
+
+.image-border {
+
+      transition: box-shadow .3s;
+      margin: 50px;
+      border-radius:10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      float: left;
+}
+
+.image-border:hover {
+     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px
+}

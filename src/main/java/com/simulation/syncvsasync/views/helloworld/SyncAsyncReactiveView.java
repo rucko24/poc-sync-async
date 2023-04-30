@@ -16,15 +16,17 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
+import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -48,6 +50,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> asyncComboBoxWithCompletableFuture = new ComboBox<>();
     private final RadioButtonGroup<AllReactorSchedulers> radioButtonGroup = new RadioButtonGroup<>();
+    private final ProgressBar progressBar = new ProgressBar();
 
     /**
      * All Schedulers here!
@@ -77,6 +80,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
         radioButtonGroup.setItems(AllReactorSchedulers.values());
         radioButtonGroup.setValue(AllReactorSchedulers.BOUNDED_ELASTIC);
         radioButtonGroup.setRenderer(AllReactorSchedulers.getIconRenderer());
+        radioButtonGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
         asyncComboBoxWithCompletableFuture.setItems(EnumSizeForRandomNumbers.values());
         Stream.of(syncComboBox, reactiveComboBox, asyncComboBoxWithCompletableFuture)
                 .forEach(e -> {
@@ -94,17 +98,22 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
         verticalLayout.setWidth("50%");
         verticalLayout.getStyle().set("border", "2px solid #e9ebef");
         verticalLayout.getStyle().set("border-radius", "10px");
-        this.add(syncComboBox, asyncComboBoxWithCompletableFuture, verticalLayout);
+        progressBar.setVisible(false);
+        progressBar.setWidth("50%");
+        progressBar.setIndeterminate(true);
+        this.add(syncComboBox, asyncComboBoxWithCompletableFuture, verticalLayout, progressBar);
     }
 
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
+            progressBar.setVisible(true);
             if (event.getValue() != null) {
                 try {
                     final var map = event.getValue();
                     this.execute(map.getSize(), e -> {
                         final var result = syncRandomNumbers.syncFrencuency(map.getSize());
                         this.showLogger(log, result);
+                        progressBar.setVisible(false);
                         return result;
                     });
                 } catch (Exception ex) {
@@ -117,6 +126,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
     private void initWithCompletableFuture(final UI ui) {
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
             if (event.getValue() != null) {
+                progressBar.setVisible(true);
                 Executor executor = Executors.newFixedThreadPool(100);
                 CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize())
                                 , executor)
@@ -125,9 +135,13 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
                                 ui.access(() -> {
                                     this.showLogger(log, map);
                                     this.execute(event.getValue().getSize(), e -> map);
+                                    progressBar.setVisible(false);
                                 });
                             } else {
-                                ui.access(() -> this.showError(error.getMessage()));
+                                ui.access(() -> {
+                                    this.showError(error.getMessage());
+                                    progressBar.setVisible(false);
+                                });
                             }
                         }, executor);
             }
@@ -137,16 +151,21 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
     private void initReactiveFrecuency(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
             if (event.getValue() != null) {
+                progressBar.setVisible(true);
                 Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
                         .subscribeOn(this.radioButtonGroup.getValue().getName())
                         .flatMap(Function.identity())
-                        .doOnError(error -> ui.access(() -> this.showError(error.getMessage())))
+                        .doOnError(error -> ui.access(() -> {
+                            this.showError(error.getMessage());
+                            this.progressBar.setVisible(false);
+                        }))
                         .doOnNext(onNext -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
                         .subscribe(subscribeMap -> {
                             ui.access(() -> {
                                 this.showLogger(log, subscribeMap);
                                 log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
                                 this.execute(event.getValue().getSize(), e -> subscribeMap);
+                                progressBar.setVisible(false);
                             });
                         });
             }
