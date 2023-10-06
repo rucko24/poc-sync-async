@@ -106,14 +106,12 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
 
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
-            progressBar.setVisible(true);
             if (event.getValue() != null) {
                 try {
                     final var map = event.getValue();
                     this.execute(map.getSize(), e -> {
                         final var result = syncRandomNumbers.syncFrencuency(map.getSize());
                         this.showLogger(log, result);
-                        progressBar.setVisible(false);
                         return result;
                     });
                 } catch (Exception ex) {
