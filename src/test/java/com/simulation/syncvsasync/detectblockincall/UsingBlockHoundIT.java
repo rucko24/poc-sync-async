@@ -1,9 +1,11 @@
 package com.simulation.syncvsasync.detectblockincall;
 
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ class UsingBlockHoundIT {
     }
 
     @Test
-    @DisplayName("Blocking call! in line 38")
+    @DisplayName("Blocking call! in line 37")
     void detectBlockingCall1() {
         StepVerifier.create(Mono.just(1)
                 .doOnNext(e -> this.blockMe())
@@ -39,7 +41,7 @@ class UsingBlockHoundIT {
     }
 
     @Test
-    @DisplayName("Blocking call! in line 47")
+    @DisplayName("Blocking call! in line 46")
     void detectBlockingCall2() {
         StepVerifier.create(this.reactiveRandomNumbers.monoWithBlockingCallInside(500L)
                         .subscribeOn(Schedulers.parallel()))
@@ -47,12 +49,29 @@ class UsingBlockHoundIT {
                 .verify();
     }
 
-//    @SneakyThrows
+    @Test
+    @DisplayName("Blocking call! in line 57, but using boudendElastic to avoid that")
+    void avoidBlockingCall() {
+
+        StepVerifier.create(Mono.just(1)
+                        .doOnNext(e -> this.blockMe())
+                        .subscribeOn(Schedulers.boundedElastic()))
+                .expectNext(1)
+                .verifyComplete();
+    }
+
+    @RepeatedTest(10)
+    @DisplayName("Blocking call! in line 67, but using boudendElastic to avoid that")
+    void avoidBlockingCall2() {
+
+        StepVerifier.create(this.reactiveRandomNumbers.monoWithBlockingCallInside(500L)
+                        .subscribeOn(Schedulers.boundedElastic()))
+                .expectNextMatches(map -> map.size() == 6)
+                .verifyComplete();
+    }
+
+    @SneakyThrows
     void blockMe() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        Thread.sleep(1000);
     }
 }
