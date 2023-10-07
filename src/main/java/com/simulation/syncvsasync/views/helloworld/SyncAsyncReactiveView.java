@@ -1,12 +1,13 @@
 package com.simulation.syncvsasync.views.helloworld;
 
-import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulers;
+import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulersAndVirtualThreads;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simulation.syncvsasync.service.MemoryConsumption;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
 import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.util.NotificationsUtils;
 import com.simulation.syncvsasync.views.main.MainView;
+import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Stream;
@@ -49,7 +51,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
     private final ComboBox<EnumSizeForRandomNumbers> syncComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> asyncComboBoxWithCompletableFuture = new ComboBox<>();
-    private final RadioButtonGroup<AllReactorSchedulers> radioButtonGroup = new RadioButtonGroup<>();
+    private final RadioButtonGroup<AllReactorSchedulersAndVirtualThreads> radioButtonGroup = new RadioButtonGroup<>();
     private final ProgressBar progressBar = new ProgressBar();
 
     /**
@@ -77,9 +79,9 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
         asyncComboBoxWithCompletableFuture.setWidthFull();
         syncComboBox.setItems(EnumSizeForRandomNumbers.values());
         reactiveComboBox.setItems(EnumSizeForRandomNumbers.values());
-        radioButtonGroup.setItems(AllReactorSchedulers.values());
-        radioButtonGroup.setValue(AllReactorSchedulers.BOUNDED_ELASTIC);
-        radioButtonGroup.setRenderer(AllReactorSchedulers.getIconRenderer());
+        radioButtonGroup.setItems(AllReactorSchedulersAndVirtualThreads.values());
+        radioButtonGroup.setValue(AllReactorSchedulersAndVirtualThreads.BOUNDED_ELASTIC);
+        radioButtonGroup.setRenderer(AllReactorSchedulersAndVirtualThreads.getIconRenderer());
         radioButtonGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
         asyncComboBoxWithCompletableFuture.setItems(EnumSizeForRandomNumbers.values());
         Stream.of(syncComboBox, reactiveComboBox, asyncComboBoxWithCompletableFuture)
@@ -106,7 +108,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
 
     private void initSyncFrecuency() {
         syncComboBox.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
+            if (noItemHasBeenSelected(event)) {
                 try {
                     final var map = event.getValue();
                     this.execute(map.getSize(), e -> {
@@ -123,32 +125,38 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
 
     private void initWithCompletableFuture(final UI ui) {
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
+            if (noItemHasBeenSelected(event)) {
                 progressBar.setVisible(true);
                 Executor executor = Executors.newFixedThreadPool(100);
                 CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize())
                                 , executor)
-                        .whenCompleteAsync((map, error) -> {
-                            if (map != null) {
-                                ui.access(() -> {
-                                    this.showLogger(log, map);
-                                    this.execute(event.getValue().getSize(), e -> map);
-                                    progressBar.setVisible(false);
-                                });
-                            } else {
-                                ui.access(() -> {
-                                    this.showError(error.getMessage());
-                                    progressBar.setVisible(false);
-                                });
-                            }
-                        }, executor);
+                        .whenCompleteAsync(this.action(ui, event), executor);
             }
         });
     }
 
+    private BiConsumer<Map<Integer, Long>, Throwable> action(UI ui,
+                                                          ComponentValueChangeEvent<ComboBox<EnumSizeForRandomNumbers>, EnumSizeForRandomNumbers> event) {
+        return (map, error) -> {
+            if (map != null) {
+                ui.access(() -> {
+                    this.showLogger(log, map);
+                    this.execute(event.getValue().getSize(), e -> map);
+                    progressBar.setVisible(false);
+                });
+            } else {
+                ui.access(() -> {
+                    this.showError(error.getMessage());
+                    progressBar.setVisible(false);
+                });
+            }
+        };
+    }
+
+
     private void initReactiveFrecuency(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
+            if (noItemHasBeenSelected(event)) {
                 progressBar.setVisible(true);
                 Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
                         .subscribeOn(this.radioButtonGroup.getValue().getName())
@@ -168,6 +176,10 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
                         });
             }
         });
+    }
+
+    private boolean noItemHasBeenSelected(ComponentValueChangeEvent<ComboBox<EnumSizeForRandomNumbers>, EnumSizeForRandomNumbers> event) {
+        return event.getValue() != null;
     }
 
     private void execute(final Long size, final LongFunction<Map<Integer, Long>> funciontFrecuency) {

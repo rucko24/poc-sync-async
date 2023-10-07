@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * The class All reactor Schedulers
  * @author rubn
  */
-public enum AllReactorSchedulers {
+public enum AllReactorSchedulersAndVirtualThreads {
 
     BOUNDED_ELASTIC(Schedulers.boundedElastic()),
     SINGLE(Schedulers.single()),
@@ -27,7 +27,7 @@ public enum AllReactorSchedulers {
 
     private Scheduler schedulers;
 
-    AllReactorSchedulers(final Scheduler schedulers) {
+    AllReactorSchedulersAndVirtualThreads(final Scheduler schedulers) {
         this.schedulers = schedulers;
     }
 
@@ -40,8 +40,8 @@ public enum AllReactorSchedulers {
      *
      * @return ComponentRenderer<Div,AllReactorSchedulers> with render icon
      */
-    public static ComponentRenderer<Div,AllReactorSchedulers> getIconRenderer() {
-        final SerializableBiConsumer<Div,AllReactorSchedulers> sbc = (div, scheduler) -> {
+    public static ComponentRenderer<Div, AllReactorSchedulersAndVirtualThreads> getIconRenderer() {
+        final SerializableBiConsumer<Div, AllReactorSchedulersAndVirtualThreads> sbc = (div, scheduler) -> {
             if(scheduler.getName() == BOUNDED_ELASTIC.getName()) {
                 final Span span = new Span();
                 span.setText(BOUNDED_ELASTIC.getName()+" 😁");
