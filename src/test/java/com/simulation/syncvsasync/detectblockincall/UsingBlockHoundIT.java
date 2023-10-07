@@ -1,7 +1,6 @@
 package com.simulation.syncvsasync.detectblockincall;
 
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,7 @@ import reactor.test.StepVerifier;
 @Log4j2
 @ContextConfiguration(classes = {ReactiveRandomNumbers.class})
 @ExtendWith(SpringExtension.class)
-class UsingBlockHoundTest {
+class UsingBlockHoundIT {
 
     @Autowired
     private ReactiveRandomNumbers reactiveRandomNumbers;
