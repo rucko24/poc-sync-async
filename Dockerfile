@@ -1,4 +1,5 @@
-FROM eclipse-temurin:17-jre
-COPY target/*.jar app.jar
+FROM openjdk:21-jdk-slim
+COPY target/*.jar poc.jar
+ENV JAVA_OPTS="-XX:+AllowRedefinitionToAddDeleteMethods -XX:+EnableDynamicAgentLoading"
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT exec java $JAVA_OPTS  -jar poc.jar

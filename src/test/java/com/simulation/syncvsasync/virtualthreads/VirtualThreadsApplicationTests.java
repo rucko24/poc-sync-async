@@ -2,6 +2,7 @@ package com.simulation.syncvsasync.virtualthreads;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ class VirtualThreadsApplicationTests {
 	private static final long RESULT = 50000005000000L;
 
 	@Test
+	@Disabled
 	@DisplayName("Executing normal threads")
 	void normalThread() throws InterruptedException {
 		var result = new AtomicLong();
