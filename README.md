@@ -9,10 +9,9 @@ For this example we're using project reactor and Vaadin flow.
 - https://poc-sync-async-reactive.herokuapp.com/
 
 ### 3 Example combobox
-
-![image](https://user-images.githubusercontent.com/17187599/168399071-462bc641-37f4-4581-8aab-f543d8779b0c.png)
+![image](https://github.com/rucko24/poc-sync-async/assets/17187599/e1ae25cb-9d5d-4e8c-a422-77afc7664090)
 
 ### BlockHound view
 
-![image](https://user-images.githubusercontent.com/17187599/168399288-f53635f8-024a-4a79-9bc1-d9318a696dc5.png)
+![image](https://github.com/rucko24/poc-sync-async/assets/17187599/d5c29bef-ff94-4bae-bd15-79e5484572f4)
 
