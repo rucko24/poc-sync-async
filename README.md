@@ -1,4 +1,4 @@
-![Heroku deploy](https://pyheroku-badge.herokuapp.com/?app=poc-sync-async-reactive&style=flat)
+![See me](https://poc-sync-async.rubn0x52.com/)
 ---
 
 # Poc sync async and reactive frecuency
@@ -6,7 +6,7 @@
 For this example we're using project reactor and Vaadin flow.
 
 - Blog post [https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html](https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html)
-- https://poc-sync-async-reactive.herokuapp.com/
+
 
 ### 3 Example combobox
 ![image](https://github.com/rucko24/poc-sync-async/assets/17187599/e1ae25cb-9d5d-4e8c-a422-77afc7664090)
