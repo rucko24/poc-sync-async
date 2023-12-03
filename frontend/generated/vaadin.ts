@@ -1,6 +1,3 @@
-import './vaadin-featureflags.ts';
+import './vaadin-featureflags.js';
 
 import './index';
-
-import { applyTheme } from './theme.js';
-applyTheme(document);
