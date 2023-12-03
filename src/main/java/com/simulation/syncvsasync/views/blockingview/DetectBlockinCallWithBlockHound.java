@@ -16,13 +16,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -77,7 +77,6 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout implements N
      * @param ui the ui for concurrency access
      */
     private void makeCall(final UI ui) {
-        this.schedulersComboBox.setPreventInvalidInput(true);
         this.schedulersComboBox.setAllowCustomValue(false);
         this.schedulersComboBox.addValueChangeListener(value -> {
             if (Objects.nonNull(value)) {

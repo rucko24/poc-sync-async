@@ -1,3 +1,3 @@
-import './index';
+import './vaadin-featureflags.js';
 
-import '@vaadin/flow-frontend/VaadinDevmodeGizmo.js';
+import './index';
