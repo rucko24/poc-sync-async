@@ -1,4 +1,4 @@
-![See me](https://poc-sync-async.rubn0x52.com/)
+[See me](https://poc-sync-async.rubn0x52.com/)
 ---
 
 # Poc sync async and reactive frecuency
