@@ -28,3 +28,23 @@ vaadin-scroller[slot="drawer"] {
 .image-border:hover {
      box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px
 }
+
+.div-main {
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.div-border-schedulers {
+    border: 2px solid #e9ebef;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .div-border-schedulers {
+        border: 2px solid #e9ebef;
+        border-radius: 10px;
+        margin-top: 10px;
+        overflow-x: auto;
+    }
+}

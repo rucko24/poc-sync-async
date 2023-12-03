@@ -1,14 +1,15 @@
 package com.simulation.syncvsasync.views.blockingview;
 
+import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulersAndVirtualThreads;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
-import com.simulation.syncvsasync.service.SyncRandomNumbers;
 import com.simulation.syncvsasync.util.NotificationsUtils;
 import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -28,9 +29,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,10 +42,9 @@ import java.util.stream.Collectors;
 public class DetectBlockinCallWithBlockHound extends VerticalLayout implements NotificationsUtils {
     //
     private final ReactiveRandomNumbers reactiveRandomNumbers;
-    private final SyncRandomNumbers syncRandomNumbers;
     private final TextArea textArea = new TextArea();
     private final Button clearTextArea = new Button("X", VaadinIcon.TRASH.create());
-    private final ComboBox<Scheduler> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
+    private final ComboBox<AllReactorSchedulersAndVirtualThreads> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
     private final ProgressBar progressBar = new ProgressBar();
     private final HorizontalLayout header = new HorizontalLayout();
 
@@ -62,26 +60,28 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout implements N
         progressBar.setVisible(false);
         progressBar.setIndeterminate(true);
         clearTextArea.setTooltipText("Clear output");
+        clearTextArea.addThemeVariants(ButtonVariant.LUMO_ERROR);
         header.setWidthFull();
         header.add(progressBar, schedulersComboBox, clearTextArea);
         header.setAlignItems(Alignment.BASELINE);
         header.setJustifyContentMode(JustifyContentMode.CENTER);
-        clearTextArea.addClickListener(clickEvent -> this.textArea.clear());
+        clearTextArea.addClickListener(clickEvent -> {
+            this.textArea.clear();
+            this.schedulersComboBox.clear();
+        });
         super.add(header);
     }
 
     private void fillComboBoxWithSchedulersAndCustomize() {
-        final List<Scheduler> schedulersList = new CopyOnWriteArrayList<>();
-        schedulersList.add(Schedulers.boundedElastic());
-        schedulersList.add(Schedulers.single());
-        schedulersList.add(Schedulers.immediate());
-        schedulersList.add(Schedulers.parallel());
-        schedulersComboBox.setItems(schedulersList);
+        schedulersComboBox.setItems(AllReactorSchedulersAndVirtualThreads.values());
+        schedulersComboBox.setRenderer(AllReactorSchedulersAndVirtualThreads.getIconRenderer());
         schedulersComboBox.setItemLabelGenerator(item -> {
-            if (item.equals(Schedulers.immediate())) {
-                return "Schedulers.immediate() 😁";
-            } else if (item.equals(Schedulers.boundedElastic())) {
-                return "Schedulers.boundedElastic() 😁";
+            final var scheduler = item.getSchedulers();
+            if (scheduler.equals(Schedulers.immediate())
+                    || scheduler.equals(AllReactorSchedulersAndVirtualThreads.THREAD_PER_TASK_EXECUTOR.getSchedulers())
+                    || scheduler.equals(AllReactorSchedulersAndVirtualThreads.VIRTUAL_THREAD_PER_TASK_EXECUTOR.getSchedulers())
+                    || scheduler.equals(Schedulers.boundedElastic())) {
+                return item.toString().concat(" 😁");
             }
             return item.toString().concat(" 😭");
         });
@@ -104,12 +104,12 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout implements N
                 Mono.fromCallable(() ->
                                 this.reactiveRandomNumbers.monoFrecuency(EnumSizeForRandomNumbers.TEN_MILLION.getSize()))
                         //Set a Scheduler at runtime
-                        .subscribeOn(value.getValue())
+                        .subscribeOn(value.getValue().getSchedulers())
                         .flatMap(Function.identity())
                         //Detected error with BlockHound
                         .doOnError(error -> {
                             ui.access(() -> {
-                                final Scheduler scheduler = value.getValue();
+                                final Scheduler scheduler = value.getValue().getSchedulers();
                                 this.showError(scheduler + " " + error);
                                 textArea.clear();
                                 String stackTrace = scheduler.toString()

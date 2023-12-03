@@ -19,7 +19,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.simulation.syncvsasync.views.helloworld.SyncAsyncReactiveView;
+import com.simulation.syncvsasync.views.concurrentview.SyncAsyncReactiveView;
 import com.simulation.syncvsasync.views.about.AboutView;
 
 /**

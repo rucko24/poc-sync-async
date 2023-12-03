@@ -1,4 +1,4 @@
-package com.simulation.syncvsasync.views.helloworld;
+package com.simulation.syncvsasync.views.concurrentview;
 
 import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulersAndVirtualThreads;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
@@ -10,13 +10,13 @@ import com.simulation.syncvsasync.views.main.MainView;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 @PageTitle("Execute frecuency sync - async - reactive")
 @RouteAlias(value = "", layout = MainView.class)
 @RequiredArgsConstructor
-public class SyncAsyncReactiveView extends VerticalLayout implements NotificationsUtils {
+public class SyncAsyncReactiveView extends Div implements NotificationsUtils {
 
     private final ComboBox<EnumSizeForRandomNumbers> syncComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();
@@ -57,7 +57,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
     /**
      * All Schedulers here!
      */
-    private final HorizontalLayout rowSchedulers = new HorizontalLayout();
+    private final Div divRowSchedulers = new Div();
 
     /**
      * Sync version
@@ -71,39 +71,46 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
 
     @PostConstruct
     public void initLayout() {
+        addClassName("div-main");
         syncComboBox.focus();
-
         syncComboBox.setLabel("Sync frecuency");
         asyncComboBoxWithCompletableFuture.setLabel("Async frecuency with CompletableFuture");
         reactiveComboBox.setLabel("Reactive frecuency with Project reactor");
+        syncComboBox.setWidthFull();
         asyncComboBoxWithCompletableFuture.setWidthFull();
         syncComboBox.setItems(EnumSizeForRandomNumbers.values());
         reactiveComboBox.setItems(EnumSizeForRandomNumbers.values());
         radioButtonGroup.setItems(AllReactorSchedulersAndVirtualThreads.values());
         radioButtonGroup.setValue(AllReactorSchedulersAndVirtualThreads.BOUNDED_ELASTIC);
+        radioButtonGroup.addValueChangeListener(e -> {
+            Stream.of(asyncComboBoxWithCompletableFuture, syncComboBox, reactiveComboBox)
+                    .forEach(HasValue::clear);
+        });
         radioButtonGroup.setRenderer(AllReactorSchedulersAndVirtualThreads.getIconRenderer());
         radioButtonGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
         asyncComboBoxWithCompletableFuture.setItems(EnumSizeForRandomNumbers.values());
         Stream.of(syncComboBox, reactiveComboBox, asyncComboBoxWithCompletableFuture)
                 .forEach(e -> {
                     e.setPlaceholder("Choose stream size");
-                    e.setWidth("50%");
                     e.setClearButtonVisible(true);
                     e.setItemLabelGenerator(EnumSizeForRandomNumbers::getItemLabel);
                 });
-        this.initSyncFrecuency();
-        this.rowSchedulers.add(radioButtonGroup);
-        this.rowSchedulers.setWidthFull();
-        final VerticalLayout verticalLayout = new VerticalLayout(reactiveComboBox, this.rowSchedulers);
+
+
+
+        this.divRowSchedulers.add(radioButtonGroup);
+        this.divRowSchedulers.addClassName("div-border-schedulers");
+
+        final Div verticalDiv = new Div(reactiveComboBox, this.divRowSchedulers);
         reactiveComboBox.setWidthFull();
-        //Clear reactive combo
-        verticalLayout.setWidth("50%");
-        verticalLayout.getStyle().set("border", "2px solid #e9ebef");
-        verticalLayout.getStyle().set("border-radius", "10px");
+
         progressBar.setVisible(false);
-        progressBar.setWidth("50%");
         progressBar.setIndeterminate(true);
-        this.add(syncComboBox, asyncComboBoxWithCompletableFuture, verticalLayout, progressBar);
+
+        final var divSyncComboAsyncCombo = new Div(syncComboBox, asyncComboBoxWithCompletableFuture);
+        this.add(divSyncComboAsyncCombo, verticalDiv, progressBar);
+
+        this.initSyncFrecuency();
     }
 
     private void initSyncFrecuency() {
@@ -127,7 +134,8 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
         asyncComboBoxWithCompletableFuture.addValueChangeListener(event -> {
             if (noItemHasBeenSelected(event)) {
                 progressBar.setVisible(true);
-                Executor executor = Executors.newFixedThreadPool(100);
+                int cores = Runtime.getRuntime().availableProcessors();
+                Executor executor = Executors.newFixedThreadPool(cores * 2 );
                 CompletableFuture.supplyAsync(() -> this.syncRandomNumbers.syncFrencuency(event.getValue().getSize())
                                 , executor)
                         .whenCompleteAsync(this.action(ui, event), executor);
@@ -159,7 +167,7 @@ public class SyncAsyncReactiveView extends VerticalLayout implements Notificatio
             if (noItemHasBeenSelected(event)) {
                 progressBar.setVisible(true);
                 Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(event.getValue().getSize()))
-                        .subscribeOn(this.radioButtonGroup.getValue().getName())
+                        .subscribeOn(this.radioButtonGroup.getValue().getSchedulers())
                         .flatMap(Function.identity())
                         .doOnError(error -> ui.access(() -> {
                             this.showError(error.getMessage());
