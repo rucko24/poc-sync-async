@@ -36,15 +36,40 @@ vaadin-scroller[slot="drawer"] {
 
 .div-border-schedulers {
     border: 2px solid #e9ebef;
-    border-radius: 10px;
-    margin-top: 10px;
+    border-radius: var(--lumo-space-m);
+    margin-top: var(--lumo-space-m);
+}
+
+.child-text-area-console {
+   margin-bottom: var(--lumo-space-m);
+   height: 90%;
+}
+
+.combo-schedulers {
+    width: 50%;
+}
+
+.header-view-blockhound {
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
 }
 
 @media (max-width: 600px) {
     .div-border-schedulers {
         border: 2px solid #e9ebef;
         border-radius: 10px;
-        margin-top: 10px;
+        margin-top: var(--lumo-space-m);
         overflow-x: auto;
+    }
+    .combo-schedulers {
+        width: 100%;
+    }
+    .header-view-blockhound {
+        flex-direction: row;
+        margin-left: var(--lumo-space-m);
+        margin-right: var(--lumo-space-m);
+        justify-content: center;
+        align-items: baseline;
     }
 }
