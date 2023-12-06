@@ -11,8 +11,12 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexDirection;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -21,6 +25,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+import com.vaadin.flow.theme.lumo.LumoUtility.AlignItems;
+import com.vaadin.flow.theme.lumo.LumoUtility.Margin.Left;
+import com.vaadin.flow.theme.lumo.LumoUtility.Margin.Right;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,37 +47,45 @@ import java.util.stream.Collectors;
 @Route(value = "blocking-calls", layout = MainView.class)
 @PageTitle("BlockHound")
 @RequiredArgsConstructor
-public class DetectBlockinCallWithBlockHound extends VerticalLayout implements NotificationsUtils {
+public class DetectBlockinCallWithBlockHound extends Div implements NotificationsUtils {
     //
     private final ReactiveRandomNumbers reactiveRandomNumbers;
     private final TextArea textArea = new TextArea();
+    private final FlexLayout divTextArea = new FlexLayout();
     private final Button clearTextArea = new Button("X", VaadinIcon.TRASH.create());
     private final ComboBox<AllReactorSchedulersAndVirtualThreads> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
     private final ProgressBar progressBar = new ProgressBar();
-    private final HorizontalLayout header = new HorizontalLayout();
 
     @PostConstruct
     public void init() {
+        this.setId("parent");
         this.setSizeFull();
+        this.getStyle().set("overflow-y", "hidden");
         this.header();
         this.fillComboBoxWithSchedulersAndCustomize();
+        this.customTextArea();
     }
 
     private void header() {
-        progressBar.setWidth("10%");
         progressBar.setVisible(false);
         progressBar.setIndeterminate(true);
         clearTextArea.setTooltipText("Clear output");
         clearTextArea.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        header.setWidthFull();
-        header.add(progressBar, schedulersComboBox, clearTextArea);
-        header.setAlignItems(Alignment.BASELINE);
-        header.setJustifyContentMode(JustifyContentMode.CENTER);
+
+        final var divProgressBar = new FlexLayout(progressBar);
+        divProgressBar.addClassNames(Right.MEDIUM, Left.MEDIUM, AlignItems.CENTER);
+        divProgressBar.setId("div-progressbar");
+
         clearTextArea.addClickListener(clickEvent -> {
             this.textArea.clear();
             this.schedulersComboBox.clear();
         });
-        super.add(header);
+        clearTextArea.addClassName(Left.MEDIUM);
+
+        final FlexLayout header = new FlexLayout(schedulersComboBox, clearTextArea);
+        header.addClassName("header-view-blockhound");
+
+        super.add(header, divProgressBar);
     }
 
     private void fillComboBoxWithSchedulersAndCustomize() {
@@ -87,10 +103,23 @@ public class DetectBlockinCallWithBlockHound extends VerticalLayout implements N
         });
         this.schedulersComboBox.setClearButtonVisible(true);
         this.schedulersComboBox.setPlaceholder("Select Scheduler...");
-        this.schedulersComboBox.setWidth("50%");
-        textArea.setValueChangeMode(ValueChangeMode.EAGER);
-        this.textArea.setSizeFull();
-        super.addAndExpand(this.textArea);
+        this.schedulersComboBox.addClassName("combo-schedulers");
+
+    }
+
+    private void customTextArea() {
+        this.textArea.setLabel("Output");
+        this.textArea.setTooltipText("Output");
+        this.textArea.setValueChangeMode(ValueChangeMode.EAGER);
+        this.textArea.setWidthFull();
+        this.textArea.setHeight("580px");
+        this.textArea.addClassName("child-text-area-console");
+        this.divTextArea.setId("div-text-area");
+        this.divTextArea.addClassNames(Right.MEDIUM, Left.MEDIUM);
+
+
+        this.divTextArea.add(this.textArea);
+        super.add(divTextArea);
     }
 
     /**
