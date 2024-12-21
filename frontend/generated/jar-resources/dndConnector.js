@@ -10,7 +10,7 @@ window.Vaadin.Flow.dndConnector = {
         event.dataTransfer.dropEffect = effect;
       }
 
-      if (effect && effect !== 'none') {
+      if (effect !== 'none') {
         /* #7108: if drag moves on top of drop target's children, first another ondragenter event
          * is fired and then a ondragleave event. This happens again once the drag
          * moves on top of another children, or back on top of the drop target element.
@@ -68,7 +68,7 @@ window.Vaadin.Flow.dndConnector = {
     if (element['__active']) {
       element.addEventListener('dragenter', this.__ondragenterListener, false);
       element.addEventListener('dragover', this.__ondragoverListener, false);
-      element.addEventListener('dragleave', this.__ondragleaveListener, false);
+      element.addEventListener('dragleave', this.__ondragleaveListener, true);
       element.addEventListener('drop', this.__ondropListener, false);
     } else {
       element.removeEventListener('dragenter', this.__ondragenterListener, false);

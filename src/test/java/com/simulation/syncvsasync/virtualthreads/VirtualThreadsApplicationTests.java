@@ -27,7 +27,7 @@ class VirtualThreadsApplicationTests {
 
     @Test
     @Disabled
-    @DisplayName("Executing normal threads")
+    @DisplayName("Executing normal threads, disabled because it takes too long")
     void normalThread() throws InterruptedException {
         var result = new AtomicLong();
         var latch = new CountDownLatch(COUNT);
@@ -41,8 +41,6 @@ class VirtualThreadsApplicationTests {
         }
 
         latch.await();
-
-        log.info("Result: {}", result.get());
 
         assertThat(result.get()).isEqualTo(RESULT);
 
@@ -63,8 +61,6 @@ class VirtualThreadsApplicationTests {
                 .subscribe();
 
         latch.await();
-
-        log.info("Result: {}", result.get());
 
         assertThat(result.get()).isEqualTo(RESULT);
 
@@ -87,8 +83,6 @@ class VirtualThreadsApplicationTests {
                 .subscribe();
 
         latch.await();
-
-        log.info("Result: {}", result.get());
 
         assertThat(result.get()).isEqualTo(RESULT);
 
@@ -114,8 +108,6 @@ class VirtualThreadsApplicationTests {
                 .subscribe();
 
         latch.await();
-
-        log.info("Result: {}", result.get());
 
         assertThat(result.get()).isEqualTo(RESULT);
 

@@ -13,19 +13,17 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
-import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexDirection;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.Command;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.theme.lumo.LumoUtility.AlignItems;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin.Left;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin.Right;
@@ -51,7 +49,7 @@ public class DetectBlockinCallWithBlockHound extends Div implements Notification
     //
     private final ReactiveRandomNumbers reactiveRandomNumbers;
     private final TextArea textArea = new TextArea();
-    private final FlexLayout divTextArea = new FlexLayout();
+    private final VerticalLayout contentLayout = new VerticalLayout();
     private final Button clearTextArea = new Button("X", VaadinIcon.TRASH.create());
     private final ComboBox<AllReactorSchedulersAndVirtualThreads> schedulersComboBox = new ComboBox<>("Make call with a Scheduler");
     private final ProgressBar progressBar = new ProgressBar();
@@ -73,6 +71,7 @@ public class DetectBlockinCallWithBlockHound extends Div implements Notification
         clearTextArea.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         final var divProgressBar = new FlexLayout(progressBar);
+        divProgressBar.setWidthFull();
         divProgressBar.addClassNames(Right.MEDIUM, Left.MEDIUM, AlignItems.CENTER);
         divProgressBar.setId("div-progressbar");
 
@@ -83,9 +82,15 @@ public class DetectBlockinCallWithBlockHound extends Div implements Notification
         clearTextArea.addClassName(Left.MEDIUM);
 
         final FlexLayout header = new FlexLayout(schedulersComboBox, clearTextArea);
+        header.setWidthFull();
         header.addClassName("header-view-blockhound");
 
-        super.add(header, divProgressBar);
+        this.contentLayout.add(header, divProgressBar);
+        this.contentLayout.setSizeFull();
+        this.contentLayout.setMargin(false);
+        this.contentLayout.setPadding(true);
+        this.contentLayout.setHeightFull();
+        super.add(contentLayout);
     }
 
     private void fillComboBoxWithSchedulersAndCustomize() {
@@ -112,14 +117,13 @@ public class DetectBlockinCallWithBlockHound extends Div implements Notification
         this.textArea.setTooltipText("Output");
         this.textArea.setValueChangeMode(ValueChangeMode.EAGER);
         this.textArea.setWidthFull();
-        this.textArea.setHeight("580px");
-        this.textArea.addClassName("child-text-area-console");
-        this.divTextArea.setId("div-text-area");
-        this.divTextArea.addClassNames(Right.MEDIUM, Left.MEDIUM);
+        this.textArea.setHeight("80%");
 
+        this.textArea.getStyle().set("scrollbar-width","thin");
+        this.textArea.addClassName("textarea-scrollbar");
+        this.contentLayout.getStyle().set("scrollbar-width","thin");
+        this.contentLayout.add(textArea);
 
-        this.divTextArea.add(this.textArea);
-        super.add(divTextArea);
     }
 
     /**

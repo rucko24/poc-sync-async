@@ -1,6 +1,5 @@
 package com.simulation.syncvsasync;
 
-import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
@@ -16,7 +15,7 @@ import reactor.blockhound.BlockHound;
 @SpringBootApplication
 @Theme(value = "demo-sync-vs-async")
 @Push
-public class Application  implements AppShellConfigurator {
+public class Application implements AppShellConfigurator {
 
     public static void main(String... args) {
         BlockHound.install();

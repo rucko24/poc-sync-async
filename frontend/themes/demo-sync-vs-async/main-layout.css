@@ -55,6 +55,10 @@ vaadin-scroller[slot="drawer"] {
     align-items: baseline;
 }
 
+vaadin-text-area.textarea-scrollbar::part(input-field) {
+    scrollbar-width: thin;
+}
+
 @media (max-width: 600px) {
     .div-border-schedulers {
         border: 2px solid #e9ebef;

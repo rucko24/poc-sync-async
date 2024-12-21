@@ -1,16 +1,13 @@
 import 'construct-style-sheets-polyfill';
 import { injectGlobalCss } from 'Frontend/generated/jar-resources/theme-util.js';
+import { webcomponentGlobalCssInjector } from 'Frontend/generated/jar-resources/theme-util.js';
 import './theme-demo-sync-vs-async.components.generated.js';
 let needsReloadOnChanges = false;
 import { typography } from '@vaadin/vaadin-lumo-styles/typography.js';
-import '@vaadin/vaadin-lumo-styles/typography-global.js';
 import { color } from '@vaadin/vaadin-lumo-styles/color.js';
-import '@vaadin/vaadin-lumo-styles/color-global.js';
 import { spacing } from '@vaadin/vaadin-lumo-styles/spacing.js';
 import { badge } from '@vaadin/vaadin-lumo-styles/badge.js';
-import '@vaadin/vaadin-lumo-styles/badge-global.js';
 import { utility } from '@vaadin/vaadin-lumo-styles/utility.js';
-import '@vaadin/vaadin-lumo-styles/utility-global.js';
 import stylesCss from 'themes/demo-sync-vs-async/styles.css?inline';
 
   let themeRemovers = new WeakMap();
@@ -26,6 +23,7 @@ removers.push(injectGlobalCss(badge.cssText, '', target, true));
 removers.push(injectGlobalCss(utility.cssText, '', target, true));
 removers.push(injectGlobalCss(stylesCss.toString(), '', target));
     
+      
     }
     
     
@@ -36,7 +34,7 @@ removers.push(injectGlobalCss(stylesCss.toString(), '', target));
     }
 
   }
-  
+
 
 if (import.meta.hot) {
   import.meta.hot.accept((module) => {

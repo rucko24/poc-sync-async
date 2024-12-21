@@ -6,7 +6,7 @@ For this example we're using project reactor and Vaadin flow, showing a way of h
 This example does not expose any endpoints, but doing so might be a better way to measure the performance of these paradigms 
 where reactive aproach generally has twice the performance in the long run.
 
-- Blog post [https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html](https://rubn0x52.com/2021/01/25/Sincronismo-asincronismo-y-algo-de-streams-reactivos.html)
+- Blog post [https://rubn0x52.com/2021/01/25/sincronismo-asincronismo-y-algo-de-streams-reactivos](https://rubn0x52.com/2021/01/25/sincronismo-asincronismo-y-algo-de-streams-reactivos)
 
 
 ### Example combobox
