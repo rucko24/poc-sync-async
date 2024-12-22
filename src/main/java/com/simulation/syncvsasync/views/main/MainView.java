@@ -1,16 +1,16 @@
 package com.simulation.syncvsasync.views.main;
 
-import java.util.Optional;
-
+import com.simulation.syncvsasync.views.about.AboutView;
 import com.simulation.syncvsasync.views.blockingview.DetectBlockinCallWithBlockHound;
+import com.simulation.syncvsasync.views.concurrentview.SyncAsyncReactiveView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,8 +19,8 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.simulation.syncvsasync.views.concurrentview.SyncAsyncReactiveView;
-import com.simulation.syncvsasync.views.about.AboutView;
+
+import java.util.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.

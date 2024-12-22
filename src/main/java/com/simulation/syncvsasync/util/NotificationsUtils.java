@@ -4,6 +4,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Map;
 
 import static com.simulation.syncvsasync.util.DemoConstants.DAEMON;
