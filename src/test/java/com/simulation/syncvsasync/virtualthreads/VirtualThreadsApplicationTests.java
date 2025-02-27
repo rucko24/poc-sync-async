@@ -12,6 +12,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,6 +107,60 @@ class VirtualThreadsApplicationTests {
                         .doOnTerminate(latch::countDown)
                 )
                 .subscribe();
+
+        latch.await();
+
+        assertThat(result.get()).isEqualTo(RESULT);
+
+    }
+
+    @Test
+    @Timeout(value = 2, unit = TimeUnit.MINUTES)
+    @SneakyThrows
+    @DisplayName("Executing virtual newVirtualThreadPerTaskExecutor ")
+    void newVirtualThreadPerTaskExecutor() {
+        var result = new AtomicLong();
+        var latch = new CountDownLatch(COUNT);
+
+        for (int i = 1; i <= COUNT; i++) {
+            try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                final int index = i;
+
+                executor.execute(() -> {
+                    result.addAndGet(index);
+                    latch.countDown();
+                });
+            }
+        }
+
+        latch.await();
+
+        assertThat(result.get()).isEqualTo(RESULT);
+
+    }
+
+    @Test
+    @Timeout(value = 2, unit = TimeUnit.MINUTES)
+    @SneakyThrows
+    @DisplayName("Executing virtual newThreadPerTaskExecutor ")
+    void newThreadPerTaskExecutor() {
+        var result = new AtomicLong();
+        var latch = new CountDownLatch(COUNT);
+
+        for (int i = 1; i <= COUNT; i++) {
+
+            var factory = Thread.ofVirtual()
+                    .name("thread-", i)
+                    .factory();
+
+            try (var executor = Executors.newThreadPerTaskExecutor(factory)) {
+                final int index = i;
+                executor.execute(() -> {
+                    result.addAndGet(index);
+                    latch.countDown();
+                });
+            }
+        }
 
         latch.await();
 
