@@ -28,6 +28,7 @@ import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -73,6 +74,7 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Be
      */
     private final ReactiveRandomNumbers reactiveRandomNumbers;
     private final MemoryConsumption memoryConsumption;
+    private Disposable disposableReactiveNumbers;
 
     @PostConstruct
     public void initLayout() {
@@ -177,7 +179,7 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Be
 
     private void processReactive(final UI ui, final Long size) {
         progressBar.setVisible(true);
-        Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(size))
+        this.disposableReactiveNumbers = Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(size))
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(Function.identity())
                 .doOnError(error -> {
@@ -219,6 +221,14 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Be
         n.open();
     }
 
+    private void closeSubscription() {
+        if (this.disposableReactiveNumbers != null) {
+            this.disposableReactiveNumbers.dispose();
+            this.disposableReactiveNumbers = null;
+            log.info("Close subscribers");
+        }
+    }
+
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         final UI ui = event.getUI();
@@ -235,6 +245,7 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Be
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         super.onDetach(detachEvent);
+        this.closeSubscription();
     }
 
     @Override
