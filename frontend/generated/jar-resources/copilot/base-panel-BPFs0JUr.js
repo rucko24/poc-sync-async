@@ -1,4 +1,4 @@
-import { M as t, b as n } from "./copilot-Bsbv-mVp.js";
+import { M as t, b as n } from "./copilot-CrQlGUim.js";
 class o extends t {
   constructor() {
     super(...arguments), this.eventBusRemovers = [], this.messageHandlers = {};

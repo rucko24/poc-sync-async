@@ -2,7 +2,6 @@ package com.simulation.syncvsasync.views.concurrentview;
 
 import com.simulation.syncvsasync.enumsizesfornumbers.AllReactorSchedulersAndVirtualThreads;
 import com.simulation.syncvsasync.enumsizesfornumbers.EnumSizeForRandomNumbers;
-import com.simulation.syncvsasync.exception.ServicesBackendError;
 import com.simulation.syncvsasync.service.MemoryConsumption;
 import com.simulation.syncvsasync.service.ReactiveRandomNumbers;
 import com.simulation.syncvsasync.service.SyncRandomNumbers;
@@ -21,9 +20,8 @@ import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -34,7 +32,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -42,6 +39,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Stream;
+
+import static com.simulation.syncvsasync.util.DemoConstants.PARAMETER_SIZE;
 
 
 /**
@@ -52,7 +51,7 @@ import java.util.stream.Stream;
 @PageTitle("Three Paradigms")
 @RouteAlias(value = "", layout = MainView.class)
 @RequiredArgsConstructor
-public class SyncAsyncReactiveView extends Div implements NotificationsUtils, HasUrlParameter<Long> {
+public class SyncAsyncReactiveView extends Div implements NotificationsUtils, BeforeEnterObserver {
 
     private final ComboBox<EnumSizeForRandomNumbers> syncComboBox = new ComboBox<>();
     private final ComboBox<EnumSizeForRandomNumbers> reactiveComboBox = new ComboBox<>();
@@ -77,7 +76,7 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Ha
 
     @PostConstruct
     public void initLayout() {
-        addClassName("div-main");
+        super.addClassName("div-main");
         syncComboBox.focus();
         syncComboBox.setLabel("Sync frecuency");
         asyncComboBoxWithCompletableFuture.setLabel("Async frecuency with CompletableFuture");
@@ -167,37 +166,34 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Ha
     }
 
 
-    private void initReactiveFrecuency(final UI ui) {
+    private void initWithReactiveStream(final UI ui) {
         reactiveComboBox.addValueChangeListener(event -> {
-            if (noItemHasBeenSelected(event)) {
-                progressBar.setVisible(true);
-                Mono.just(this.reactiveRandomNumbers)
-                        .flatMap(reactiveParam -> {
-                            try {
-                                return reactiveParam.monoFrecuency(event.getValue().getSize());
-                            } catch (Exception ex) {
-                                return Mono.empty();
-                            }
-                        })
-                        .switchIfEmpty(Mono.error(new ServicesBackendError("Error al procesar servicio reactivo")))
-                        .publishOn(this.radioButtonGroup.getValue().getSchedulers())
-                        .doOnError(error ->
-                                ui.access(() -> {
-                                    this.showError(error.getMessage());
-                                    this.progressBar.setVisible(false);
-                                })
-                        )
-                        .doOnNext(onNext -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
-                        .subscribe(subscribeMap -> {
-                            ui.access(() -> {
-                                this.showLogger(log, subscribeMap);
-                                log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
-                                this.execute(event.getValue().getSize(), e -> subscribeMap);
-                                progressBar.setVisible(false);
-                            });
-                        });
+            if (this.noItemHasBeenSelected(event)) {
+                this.processReactive(ui, event.getValue().getSize());
             }
         });
+    }
+
+    private void processReactive(final UI ui, final Long size) {
+        progressBar.setVisible(true);
+        Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(size))
+                .subscribeOn(Schedulers.boundedElastic())
+                .flatMap(Function.identity())
+                .doOnError(error -> {
+                    ui.access(() -> {
+                        this.showError(error.getMessage());
+                        this.progressBar.setVisible(false);
+                    });
+                })
+                .doOnNext(onNext -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
+                .subscribe(subscribeMap -> {
+                    ui.access(() -> {
+                        this.showLogger(log, subscribeMap);
+                        log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
+                        this.execute(size, funciontFrecuency -> subscribeMap);
+                        progressBar.setVisible(false);
+                    });
+                });
     }
 
     private boolean noItemHasBeenSelected(ComponentValueChangeEvent<ComboBox<EnumSizeForRandomNumbers>, EnumSizeForRandomNumbers> event) {
@@ -223,6 +219,19 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Ha
     }
 
     @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        final UI ui = event.getUI();
+        event.getLocation().getQueryParameters().getSingleParameter(PARAMETER_SIZE)
+                .ifPresent(sizePresent -> {
+                    final Long tmpSize = Long.valueOf(sizePresent);
+                    final Long size = tmpSize == 0 ? 0L : tmpSize;
+                    if (size != 0) {
+                        this.processReactive(ui, size);
+                    }
+                });
+    }
+
+    @Override
     protected void onDetach(DetachEvent detachEvent) {
         super.onDetach(detachEvent);
     }
@@ -230,39 +239,9 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Ha
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-        this.getUI().ifPresent(ui -> {
-            this.initReactiveFrecuency(ui);
-            this.initWithCompletableFuture(ui);
-        });
-
+        final UI ui = attachEvent.getUI();
+        this.initWithReactiveStream(ui);
+        this.initWithCompletableFuture(ui);
     }
 
-    @Override
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Long parameter) {
-        if (Objects.nonNull(parameter)) {
-            Mono.fromSupplier(() -> this.reactiveRandomNumbers.monoFrecuency(parameter))
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .flatMap(Function.identity())
-                    .doOnError(error -> {
-                        super.getUI().ifPresent(ui ->
-                                ui.access(() -> {
-                                    this.showError(error.getMessage());
-                                    this.progressBar.setVisible(false);
-                                })
-                        );
-                    })
-                    .doOnNext(onNext -> log.info("Thread name doOnNext(): {}", Thread.currentThread().getName()))
-                    .subscribe(subscribeMap -> {
-                        super.getUI().ifPresent(ui ->
-                                ui.access(() -> {
-                                    this.showLogger(log, subscribeMap);
-                                    log.info("Thread name subscribe(): {}", Thread.currentThread().getName());
-                                    this.execute(parameter , e -> subscribeMap);
-                                    progressBar.setVisible(false);
-                                })
-                        );
-                    });
-        }
-
-    }
 }

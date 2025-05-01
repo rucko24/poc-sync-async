@@ -1,8 +1,8 @@
-import { x as d, b as c, p as h, U as f, s as v, P as b, y as m, n as g } from "./copilot-Bsbv-mVp.js";
-import { r as p } from "./state-BzwXpuSR.js";
-import { m as y, e as k } from "./overlay-monkeypatch-ClCaVKxW.js";
-import { B as x } from "./base-panel-BdeqExUd.js";
-import { i as w } from "./icons-CMypsfpf.js";
+import { x as d, b as c, p as h, U as f, s as v, P as b, y as m, n as g } from "./copilot-CrQlGUim.js";
+import { r as p } from "./state-CpHuw1-w.js";
+import { m as y, e as k } from "./overlay-monkeypatch-C6Ef2C3V.js";
+import { B as x } from "./base-panel-BPFs0JUr.js";
+import { i as w } from "./icons-CenXfqbT.js";
 const $ = "copilot-feedback-panel{display:flex;flex-direction:column;font:var(--font-xsmall);--vaadin-input-field-label-font-size: var(--font-size-1);padding:var(--space-200);gap:var(--space-200);justify-content:space-between}copilot-feedback-panel>p{margin:0}copilot-feedback-panel .dialog-footer{display:flex;gap:var(--space-100)}copilot-feedback-panel vaadin-select,copilot-feedback-panel vaadin-text-area,copilot-feedback-panel vaadin-text-field{padding-top:0;--lumo-text-field-size: 1.75rem;--vaadin-input-field-label-font-size: var(--font-size-2);--vaadin-input-field-background: none;--vaadin-input-field-border-color: transparent;--vaadin-input-field-border-width: 1px;--vaadin-input-field-border-color: var(--border-color-high-contrast);--vaadin-input-field-hover-highlight: var(--gray-100);--vaadin-input-field-hover-highlight-opacity: 1}copilot-feedback-panel vaadin-text-area>textarea{max-height:7em}copilot-feedback-panel vaadin-text-area>textarea{padding:var(--space-100) 0;font:var(--font-xsmall)}copilot-feedback-panel vaadin-text-area:hover::part(input-field){background-color:var(--gray-100)}copilot-feedback-panel vaadin-text-field>input{font:var(--font-xsmall)}copilot-feedback-panel vaadin-select::part(input-field){border-radius:var(--radius-1);flex:1;padding:0 var(--space-50)}copilot-feedback-panel vaadin-select[focus-ring]::part(input-field){box-shadow:none;outline:2px solid var(--selection-color);outline-offset:-2px}copilot-feedback-panel vaadin-select-value-button{padding:0 var(--space-50)}copilot-feedback-panel vaadin-select-item{--_lumo-selected-item-height: 1.75rem;--_lumo-selected-item-padding: 0;font:var(--font-xsmall)}copilot-feedback-panel vaadin-select-item:not([disabled]):hover{background:transparent;color:var(--color-high-contrast)}copilot-feedback-panel vaadin-combo-box-item:not([disabled]):hover{background:transparent;color:var(--color-high-contrast)}";
 var A = Object.defineProperty, P = Object.getOwnPropertyDescriptor, o = (e, t, l, n) => {
   for (var a = n > 1 ? void 0 : n ? P(t, l) : t, s = e.length - 1, r; s >= 0; s--)

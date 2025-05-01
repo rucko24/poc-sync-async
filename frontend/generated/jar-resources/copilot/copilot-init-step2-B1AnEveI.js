@@ -1,7 +1,7 @@
-import { n as A, M as D, b as u, j as a, o as T, p as d, q as oe, r as O, u as E, O as q, A as I, v as b, x as l, w as pe, y as ge, z as N, B as G, E as p, D as ue, k as ve, l as fe, P as me, F as be, I as we, V as ye, G as xe, H as ae, J as $, K as H, L as se, N as K, Q as Pe, R as Ie, S as ze, T as Ae, U as re, W as Ce, X as ke, Y as Se, Z as $e, _ as le, $ as de, a0 as De } from "./copilot-Bsbv-mVp.js";
-import { n as j, r as C } from "./state-BzwXpuSR.js";
-import { e as k, m as ce } from "./overlay-monkeypatch-ClCaVKxW.js";
-import { i as c } from "./icons-CMypsfpf.js";
+import { n as A, M as D, b as u, j as s, o as T, p as d, q as oe, r as O, u as E, O as q, A as I, v as b, x as l, w as pe, y as ge, z as N, B as G, E as p, D as ue, k as ve, l as me, P as fe, F as be, I as we, V as ye, G as xe, H as ae, J as $, K as H, L as se, N as K, Q as Pe, R as Ie, S as ze, T as Ae, U as re, W as Ce, X as ke, Y as Se, Z as $e, _ as le, $ as de, a0 as De } from "./copilot-CrQlGUim.js";
+import { n as j, r as C } from "./state-CpHuw1-w.js";
+import { e as k, m as ce } from "./overlay-monkeypatch-C6Ef2C3V.js";
+import { i as c } from "./icons-CenXfqbT.js";
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -15,15 +15,15 @@ function Le(e) {
 }
 const X = "@keyframes bounce{0%{transform:scale(.8)}50%{transform:scale(1.5)}to{transform:scale(1)}}@keyframes around-we-go-again{0%{background-position:0 0,0 0,calc(var(--glow-size) * -.5) calc(var(--glow-size) * -.5),calc(100% + calc(var(--glow-size) * .5)) calc(100% + calc(var(--glow-size) * .5))}25%{background-position:0 0,0 0,calc(100% + calc(var(--glow-size) * .5)) calc(var(--glow-size) * -.5),calc(var(--glow-size) * -.5) calc(100% + calc(var(--glow-size) * .5))}50%{background-position:0 0,0 0,calc(100% + calc(var(--glow-size) * .5)) calc(100% + calc(var(--glow-size) * .5)),calc(var(--glow-size) * -.5) calc(var(--glow-size) * -.5)}75%{background-position:0 0,0 0,calc(var(--glow-size) * -.5) calc(100% + calc(var(--glow-size) * .5)),calc(100% + calc(var(--glow-size) * .5)) calc(var(--glow-size) * -.5)}to{background-position:0 0,0 0,calc(var(--glow-size) * -.5) calc(var(--glow-size) * -.5),calc(100% + calc(var(--glow-size) * .5)) calc(100% + calc(var(--glow-size) * .5))}}@keyframes swirl{0%{rotate:0deg;filter:hue-rotate(20deg)}50%{filter:hue-rotate(-30deg)}to{rotate:360deg;filter:hue-rotate(20deg)}}";
 var Ee = Object.defineProperty, Me = Object.getOwnPropertyDescriptor, S = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? Me(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? Me(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Ee(t, o, n), n;
 };
 const J = "data-drag-initial-index", R = "data-drag-final-index";
 let P = class extends D {
   constructor() {
     super(...arguments), this.position = "right", this.opened = !1, this.keepOpen = !1, this.resizing = !1, this.closingForcefully = !1, this.draggingSectionPanel = null, this.documentMouseUpListener = () => {
-      this.resizing && u.emit("user-select", { allowSelection: !0 }), this.resizing = !1, a.setDrawerResizing(!1), this.removeAttribute("resizing");
+      this.resizing && u.emit("user-select", { allowSelection: !0 }), this.resizing = !1, s.setDrawerResizing(!1), this.removeAttribute("resizing");
     }, this.activationAnimationTransitionEndListener = () => {
       this.style.removeProperty("--closing-delay"), this.style.removeProperty("--initial-position"), this.removeEventListener("transitionend", this.activationAnimationTransitionEndListener);
     }, this.resizingMouseMoveListener = (e) => {
@@ -74,8 +74,8 @@ let P = class extends D {
     }, this.updateSectionPanelPositionsWhileDragging = () => {
       const e = this.draggingSectionPanel.getBoundingClientRect().height;
       this.getAllPanels().sort((t, o) => {
-        const i = t.getBoundingClientRect(), n = o.getBoundingClientRect(), s = (i.top + i.bottom) / 2, r = (n.top + n.bottom) / 2;
-        return s - r;
+        const i = t.getBoundingClientRect(), n = o.getBoundingClientRect(), a = (i.top + i.bottom) / 2, r = (n.top + n.bottom) / 2;
+        return a - r;
       }).forEach((t, o) => {
         if (t.setAttribute(R, `${o}`), t.panelTag !== this.draggingSectionPanel?.panelTag) {
           const i = Number.parseInt(t.getAttribute(J), 10);
@@ -387,7 +387,7 @@ let P = class extends D {
       () => d.panels,
       () => this.requestUpdate()
     ), this.reaction(
-      () => a.operationInProgress,
+      () => s.operationInProgress,
       (t) => {
         t === q.DragAndDrop && !this.opened && !this.keepOpen ? this.style.setProperty("pointer-events", "none") : this.style.setProperty("pointer-events", "auto");
       }
@@ -398,9 +398,9 @@ let P = class extends D {
         t && !t.floating && this.toggleAttribute(I, t.panel === this.position);
       }
     ), this.reaction(
-      () => a.active,
+      () => s.active,
       () => {
-        if (!a.active || !b.isActivationAnimation() || a.activatedFrom === "restore" || a.activatedFrom === "test")
+        if (!s.active || !b.isActivationAnimation() || s.activatedFrom === "restore" || s.activatedFrom === "test")
           return;
         const t = d.getAttentionRequiredPanelConfiguration();
         t && !t.floating && t.panel === this.position || (this.addEventListener("transitionend", this.activationAnimationTransitionEndListener), this.toggleAttribute("no-transition", !0), this.opened = !0, this.style.setProperty("--closing-delay", "var(--duration-1)"), this.style.setProperty("--initial-position", "calc(-1 * (max(var(--size), var(--min-size)) * 1) / 3)"), requestAnimationFrame(() => {
@@ -415,7 +415,7 @@ let P = class extends D {
   }
   firstUpdated(e) {
     super.firstUpdated(e), requestAnimationFrame(() => this.toggleAttribute("no-transition", !1)), this.resizeElement.addEventListener("mousedown", (t) => {
-      t.button === 0 && (this.resizing = !0, a.setDrawerResizing(!0), this.setAttribute("resizing", ""), u.emit("user-select", { allowSelection: !1 }));
+      t.button === 0 && (this.resizing = !0, s.setDrawerResizing(!0), this.setAttribute("resizing", ""), u.emit("user-select", { allowSelection: !1 }));
     });
   }
   updated(e) {
@@ -429,7 +429,7 @@ let P = class extends D {
    * @private
    */
   cleanUpDragging() {
-    this.draggingSectionPanel && (a.setSectionPanelDragging(!1), this.draggingSectionPanel.style.zIndex = "", Array.from(this.querySelectorAll("copilot-section-panel-wrapper")).forEach((e) => {
+    this.draggingSectionPanel && (s.setSectionPanelDragging(!1), this.draggingSectionPanel.style.zIndex = "", Array.from(this.querySelectorAll("copilot-section-panel-wrapper")).forEach((e) => {
       e.style.removeProperty("transform"), e.removeAttribute(R), e.removeAttribute(J);
     }), this.draggingSectionPanel.removeAttribute("dragging"), this.draggingSectionPanel = null);
   }
@@ -445,7 +445,7 @@ let P = class extends D {
     }, 0.5);
   }
   mouseEnterListener(e) {
-    if (this.closingForcefully || a.sectionPanelResizing)
+    if (this.closingForcefully || s.sectionPanelResizing)
       return;
     document.querySelector("copilot-main").shadowRoot.querySelector("copilot-drawer-panel[opened]") || (this.opened = !0);
   }
@@ -493,8 +493,8 @@ P = S([
   A("copilot-drawer-panel")
 ], P);
 var Re = Object.defineProperty, Oe = Object.getOwnPropertyDescriptor, he = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? Oe(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? Oe(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Re(t, o, n), n;
 };
 let F = class extends pe {
@@ -510,7 +510,9 @@ let F = class extends pe {
       }
 
       .switch input {
-        display: none;
+        height: 0;
+        opacity: 0;
+        width: 0;
       }
 
       .slider {
@@ -576,7 +578,7 @@ he([
 F = he([
   A("copilot-toggle-button")
 ], F);
-function m(e, t) {
+function f(e, t) {
   const o = document.createElement(e);
   if (t.style && (o.className = t.style), t.icon)
     if (typeof t.icon == "string") {
@@ -609,13 +611,13 @@ class je {
     this.offsetX = o.clientX - t.getBoundingClientRect().left, this.offsetY = o.clientY - t.getBoundingClientRect().top;
   }
   dragging(t, o) {
-    const i = o.clientX, n = o.clientY, s = i - this.offsetX, r = i - this.offsetX + t.getBoundingClientRect().width, h = n - this.offsetY, g = n - this.offsetY + t.getBoundingClientRect().height;
-    return this.adjust(t, s, h, r, g);
+    const i = o.clientX, n = o.clientY, a = i - this.offsetX, r = i - this.offsetX + t.getBoundingClientRect().width, h = n - this.offsetY, g = n - this.offsetY + t.getBoundingClientRect().height;
+    return this.adjust(t, a, h, r, g);
   }
-  adjust(t, o, i, n, s) {
+  adjust(t, o, i, n, a) {
     let r, h, g, v;
     const y = document.documentElement.getBoundingClientRect().width, U = document.documentElement.getBoundingClientRect().height;
-    return (n + o) / 2 < y / 2 ? (t.style.setProperty("--left", `${o}px`), t.style.setProperty("--right", ""), v = void 0, r = Math.max(0, o)) : (t.style.removeProperty("--left"), t.style.setProperty("--right", `${y - n}px`), r = void 0, v = Math.max(0, y - n)), (i + s) / 2 < U / 2 ? (t.style.setProperty("--top", `${i}px`), t.style.setProperty("--bottom", ""), g = void 0, h = Math.max(0, i)) : (t.style.setProperty("--top", ""), t.style.setProperty("--bottom", `${U - s}px`), h = void 0, g = Math.max(0, U - s)), {
+    return (n + o) / 2 < y / 2 ? (t.style.setProperty("--left", `${o}px`), t.style.setProperty("--right", ""), v = void 0, r = Math.max(0, o)) : (t.style.removeProperty("--left"), t.style.setProperty("--right", `${y - n}px`), r = void 0, v = Math.max(0, y - n)), (i + a) / 2 < U / 2 ? (t.style.setProperty("--top", `${i}px`), t.style.setProperty("--bottom", ""), g = void 0, h = Math.max(0, i)) : (t.style.setProperty("--top", ""), t.style.setProperty("--bottom", `${U - a}px`), h = void 0, g = Math.max(0, U - a)), {
       left: r,
       right: v,
       top: h,
@@ -623,8 +625,8 @@ class je {
     };
   }
   anchor(t) {
-    const { left: o, top: i, bottom: n, right: s } = t.getBoundingClientRect();
-    return this.adjust(t, o, i, s, n);
+    const { left: o, top: i, bottom: n, right: a } = t.getBoundingClientRect();
+    return this.adjust(t, o, i, a, n);
   }
   anchorLeftTop(t) {
     const { left: o, top: i } = t.getBoundingClientRect();
@@ -636,18 +638,18 @@ class je {
 }
 const x = new je();
 var Te = Object.defineProperty, He = Object.getOwnPropertyDescriptor, M = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? He(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? He(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Te(t, o, n), n;
 };
 const Z = "https://github.com/JetBrains/JetBrainsRuntime/releases";
 function Be(e, t) {
   if (!t)
     return !0;
-  const [o, i, n] = t.split(".").map((g) => parseInt(g)), [s, r, h] = e.split(".").map((g) => parseInt(g));
-  if (o < s)
+  const [o, i, n] = t.split(".").map((g) => parseInt(g)), [a, r, h] = e.split(".").map((g) => parseInt(g));
+  if (o < a)
     return !0;
-  if (o == s) {
+  if (o == a) {
     if (i < r)
       return !0;
     if (i === r)
@@ -659,9 +661,9 @@ const Q = "Download complete";
 let w = class extends D {
   constructor() {
     super(), this.javaPluginSectionOpened = !1, this.hotswapSectionOpened = !1, this.hotswapTab = "hotswapagent", this.downloadStatusMessages = [], this.downloadProgress = 0, this.onDownloadStatusUpdate = this.downloadStatusUpdate.bind(this), this.reaction(
-      () => [a.jdkInfo, a.idePluginState],
+      () => [s.jdkInfo, s.idePluginState],
       () => {
-        a.idePluginState && (!a.idePluginState.ide || !a.idePluginState.active ? this.javaPluginSectionOpened = !0 : (!(/* @__PURE__ */ new Set(["vscode", "intellij"])).has(a.idePluginState.ide) || !a.idePluginState.active) && (this.javaPluginSectionOpened = !1)), a.jdkInfo && N() !== "success" && (this.hotswapSectionOpened = !0);
+        s.idePluginState && (!s.idePluginState.ide || !s.idePluginState.active ? this.javaPluginSectionOpened = !0 : (!(/* @__PURE__ */ new Set(["vscode", "intellij"])).has(s.idePluginState.ide) || !s.idePluginState.active) && (this.javaPluginSectionOpened = !1)), s.jdkInfo && N() !== "success" && (this.hotswapSectionOpened = !0);
       },
       { fireImmediately: !0 }
     );
@@ -674,10 +676,10 @@ let w = class extends D {
   }
   render() {
     const e = {
-      intellij: a.idePluginState?.ide === "intellij",
-      vscode: a.idePluginState?.ide === "vscode",
-      eclipse: a.idePluginState?.ide === "eclipse",
-      idePluginInstalled: !!a.idePluginState?.active
+      intellij: s.idePluginState?.ide === "intellij",
+      vscode: s.idePluginState?.ide === "vscode",
+      eclipse: s.idePluginState?.ide === "eclipse",
+      idePluginInstalled: !!s.idePluginState?.active
     };
     return l`
       <div part="container">${this.renderPluginSection(e)} ${this.renderHotswapSection(e)}</div>
@@ -700,9 +702,9 @@ let w = class extends D {
       <details
         part="panel"
         .open=${this.javaPluginSectionOpened}
-        @toggle=${(s) => {
+        @toggle=${(a) => {
       G(() => {
-        this.javaPluginSectionOpened = s.target.open;
+        this.javaPluginSectionOpened = a.target.open;
       });
     }}>
         <summary part="header">
@@ -760,12 +762,12 @@ let w = class extends D {
     `;
   }
   renderHotswapSection(e) {
-    const { jdkInfo: t } = a;
+    const { jdkInfo: t } = s;
     if (!t)
       return p;
     const o = N(), i = ue();
-    let n, s, r;
-    return o === "success" ? (n = c.successColorful, r = "Java Hotswap is enabled") : o === "warning" ? (n = c.warningColorful, r = "Java Hotswap is not enabled") : o === "error" && (n = c.warningColorful, r = "Java Hotswap is partially enabled"), this.hotswapTab === "jrebel" ? t.jrebel ? s = this.renderJRebelInstalledContent() : s = this.renderJRebelNotInstalledContent() : e.intellij ? s = this.renderHotswapAgentIntelliJPluginContent() : s = this.renderHotswapAgentNotInstalledContent(e), l` <details
+    let n, a, r;
+    return o === "success" ? (n = c.successColorful, r = "Java Hotswap is enabled") : o === "warning" ? (n = c.warningColorful, r = "Java Hotswap is not enabled") : o === "error" && (n = c.warningColorful, r = "Java Hotswap is partially enabled"), this.hotswapTab === "jrebel" ? t.jrebel ? a = this.renderJRebelInstalledContent() : a = this.renderJRebelNotInstalledContent() : e.intellij ? a = this.renderHotswapAgentIntelliJPluginContent() : a = this.renderHotswapAgentNotInstalledContent(e), l` <details
       part="panel"
       .open=${this.hotswapSectionOpened}
       @toggle=${(h) => {
@@ -799,7 +801,7 @@ let w = class extends D {
                 JRebel
               </button>
             </div>
-            <div part="content">${s}</div>
+            <div part="content">${a}</div>
             </div>
             </details>
           `}
@@ -855,7 +857,7 @@ let w = class extends D {
     `;
   }
   renderJavaRunningInDebugModeSection() {
-    const e = a.jdkInfo?.runningInJavaDebugMode;
+    const e = s.jdkInfo?.runningInJavaDebugMode;
     return l`
       <div class="inner-section">
         <details class="inner" .open="${!e}">
@@ -869,7 +871,7 @@ let w = class extends D {
     `;
   }
   renderHotswapAgentMissingArgParam(e) {
-    const t = a.jdkInfo?.runningWitHotswap && a.jdkInfo?.runningWithExtendClassDef;
+    const t = s.jdkInfo?.runningWitHotswap && s.jdkInfo?.runningWithExtendClassDef;
     return l`
       <div class="inner-section">
         <details class="inner" .open="${!t}">
@@ -896,7 +898,7 @@ let w = class extends D {
     `;
   }
   renderHotswapAgentJdkSection(e) {
-    const t = a.jdkInfo?.extendedClassDefCapable, o = this.downloadStatusMessages?.[this.downloadStatusMessages.length - 1] === Q;
+    const t = s.jdkInfo?.extendedClassDefCapable, o = this.downloadStatusMessages?.[this.downloadStatusMessages.length - 1] === Q;
     return l`
       <div class="inner-section">
         <details class="inner" .open="${!t}">
@@ -907,7 +909,7 @@ let w = class extends D {
           <div class="hint">
             JetBrains Runtime provides much better hotswapping compared to other JDKs.
             <ul>
-              ${e.intellij && Be("1.3.0", a.idePluginState?.version) ? l` <li>Upgrade to the latest IntelliJ plugin</li>` : p}
+              ${e.intellij && Be("1.3.0", s.idePluginState?.version) ? l` <li>Upgrade to the latest IntelliJ plugin</li>` : p}
               ${e.intellij ? l` <li>Launch the application in IntelliJ using "Debug using Hotswap Agent"</li>` : p}
               ${e.vscode ? l` <li>
                     <a href @click="${(i) => this.downloadJetbrainsRuntime(i)}"
@@ -935,7 +937,7 @@ let w = class extends D {
     `;
   }
   renderInstallHotswapAgentJdkSection(e) {
-    const t = a.jdkInfo?.hotswapAgentFound, o = a.jdkInfo?.extendedClassDefCapable;
+    const t = s.jdkInfo?.hotswapAgentFound, o = s.jdkInfo?.extendedClassDefCapable;
     return l`
       <div class="inner-section">
         <details class="inner" .open="${!t}">
@@ -965,9 +967,9 @@ let w = class extends D {
     `;
   }
   renderHotswapAgentVersionSection() {
-    if (!a.jdkInfo?.hotswapAgentFound)
+    if (!s.jdkInfo?.hotswapAgentFound)
       return p;
-    const e = a.jdkInfo?.hotswapVersionOk, t = a.jdkInfo?.hotswapVersion, o = a.jdkInfo?.hotswapAgentLocation;
+    const e = s.jdkInfo?.hotswapVersionOk, t = s.jdkInfo?.hotswapVersion, o = s.jdkInfo?.hotswapAgentLocation;
     return l`
       <div class="inner-section">
         <details class="inner" .open="${!e}">
@@ -993,8 +995,8 @@ let w = class extends D {
     return l` <div>Hotswap agent is in use. Enjoy your awesome development workflow!</div> `;
   }
   async downloadJetbrainsRuntime(e) {
-    return e.target.disabled = !0, e.preventDefault(), this.downloadStatusMessages = [], ve(`${me}set-up-vs-code-hotswap`, {}, (t) => {
-      t.data.error ? (fe("Error downloading JetBrains runtime", t.data.error), this.downloadStatusMessages = [...this.downloadStatusMessages, "Download failed"]) : this.downloadStatusMessages = [...this.downloadStatusMessages, Q];
+    return e.target.disabled = !0, e.preventDefault(), this.downloadStatusMessages = [], ve(`${fe}set-up-vs-code-hotswap`, {}, (t) => {
+      t.data.error ? (me("Error downloading JetBrains runtime", t.data.error), this.downloadStatusMessages = [...this.downloadStatusMessages, "Download failed"]) : this.downloadStatusMessages = [...this.downloadStatusMessages, Q];
     });
   }
   downloadStatusUpdate(e) {
@@ -1193,8 +1195,8 @@ const Y = ge({
 window.Vaadin.copilot.plugins.push(Ue);
 d.addPanel(Y);
 var Ne = Object.defineProperty, Je = Object.getOwnPropertyDescriptor, Ve = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? Je(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? Je(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Ne(t, o, n), n;
 };
 let ee = class extends D {
@@ -1225,13 +1227,18 @@ ee = Ve([
   A("copilot-activation-button-development-workflow")
 ], ee);
 var Fe = Object.defineProperty, qe = Object.getOwnPropertyDescriptor, Xe = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? qe(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? qe(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Fe(t, o, n), n;
 };
 let te = class extends D {
   constructor() {
-    super(...arguments), this.info = a.userInfo, this.clickListener = this.getClickListener();
+    super(), this.clickListener = this.getClickListener(), this.reaction(
+      () => s.userInfo,
+      () => {
+        this.requestUpdate();
+      }
+    );
   }
   createRenderRoot() {
     return this;
@@ -1253,38 +1260,38 @@ let te = class extends D {
     `;
   }
   getClickListener() {
-    return a.userInfo?.validLicense ? () => window.open("https://vaadin.com/myaccount", "_blank", "noopener") : () => a.setLoginCheckActive(!0);
+    return s.userInfo?.validLicense ? () => window.open("https://vaadin.com/myaccount", "_blank", "noopener") : () => s.setLoginCheckActive(!0);
   }
   getUsername() {
-    return a.userInfo?.firstName ? `${a.userInfo.firstName} ${a.userInfo.lastName}` : "Log in";
+    return s.userInfo?.firstName ? `${s.userInfo.firstName} ${s.userInfo.lastName}` : "Log in";
   }
   getStatus() {
-    if (!a.userInfo?.validLicense) {
+    if (!s.userInfo?.validLicense) {
       if ($.active) {
         const e = Math.round($.remainingTimeInMillis / 864e5);
         return `Preview expires in ${e}${e === 1 ? " day" : " days"}`;
       }
-      if ($.expired && !a.userInfo?.validLicense)
+      if ($.expired && !s.userInfo?.validLicense)
         return "Preview expired";
-      if (!$.active && !$.expired && !a.userInfo?.validLicense)
+      if (!$.active && !$.expired && !s.userInfo?.validLicense)
         return "No valid license available";
     }
   }
   renderPortrait() {
-    return a.userInfo?.portraitUrl ? l`<div
+    return s.userInfo?.portraitUrl ? l`<div
         class="portrait"
-        style="background-image: url('https://vaadin.com${a.userInfo.portraitUrl}')"></div>` : p;
+        style="background-image: url('https://vaadin.com${s.userInfo.portraitUrl}')"></div>` : p;
   }
   renderDot() {
-    return a.userInfo?.validLicense ? p : $.active || $.expired ? l`<div class="icon warning"></div>` : p;
+    return s.userInfo?.validLicense ? p : $.active || $.expired ? l`<div class="icon warning"></div>` : p;
   }
 };
 te = Xe([
   A("copilot-activation-button-user-info")
 ], te);
 var Ye = Object.defineProperty, We = Object.getOwnPropertyDescriptor, B = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? We(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? We(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Ye(t, o, n), n;
 };
 const Ge = 8;
@@ -1321,7 +1328,7 @@ let _ = class extends D {
       const n = o.querySelector("vaadin-menu-bar-list-box");
       if (!n)
         return !1;
-      const s = n.getBoundingClientRect(), r = i.getBoundingClientRect(), h = Math.min(s.x, r.x), g = Math.min(s.y, r.y), v = Math.max(s.width, r.width), y = s.height + r.height;
+      const a = n.getBoundingClientRect(), r = i.getBoundingClientRect(), h = Math.min(a.x, r.x), g = Math.min(a.y, r.y), v = Math.max(a.width, r.width), y = a.height + r.height;
       return oe(new DOMRect(h, g, v, y), e.clientX, e.clientY);
     }, this.dispatchSpotlightActivationEvent = (e) => {
       this.dispatchEvent(
@@ -1330,7 +1337,7 @@ let _ = class extends D {
         })
       );
     }, this.activationBtnClicked = (e) => {
-      if (a.active && this.handleAttentionRequiredOnClick()) {
+      if (s.active && this.handleAttentionRequiredOnClick()) {
         e?.stopPropagation(), e?.preventDefault();
         return;
       }
@@ -1489,9 +1496,9 @@ let _ = class extends D {
         this.toggleAttribute(I, d.attentionRequiredPanelTag !== null), this.updateIndicator();
       }
     ), this.reaction(
-      () => a.active,
+      () => s.active,
       () => {
-        this.toggleAttribute("active", a.active);
+        this.toggleAttribute("active", s.active);
       },
       { fireImmediately: !0 }
     ), this.addEventListener("mousedown", this.mouseDownListener), document.addEventListener("mouseup", this.documentMouseUpListener);
@@ -1499,22 +1506,12 @@ let _ = class extends D {
     e ? (this.style.setProperty("--left", `${e.left}px`), this.style.setProperty("--bottom", `${e.bottom}px`), this.style.setProperty("--right", `${e.right}px`), this.style.setProperty("--top", `${e.top}px`)) : (this.style.setProperty("--bottom", "var(--space)"), this.style.setProperty("--right", "var(--space)")), u.on("document-activation-change", (t) => {
       this.toggleAttribute("document-hidden", !t.detail.active);
     }), this.reaction(
-      () => [a.jdkInfo, a.idePluginState],
+      () => [s.jdkInfo, s.idePluginState],
       () => {
         this.updateIndicator();
       }
     ), this.reaction(
-      () => [a.userInfo],
-      () => {
-        this.requestUpdate();
-      }
-    ), this.reaction(
-      () => [
-        a.active,
-        a.idePluginState,
-        b.isActivationAnimation(),
-        a.userInfo
-      ],
+      () => [s.active, s.idePluginState, b.isActivationAnimation()],
       () => {
         this.generateItems();
       }
@@ -1546,23 +1543,23 @@ let _ = class extends D {
         children: []
       }
     ];
-    a.userInfo?.copilotProjectCannotLeaveLocalhost !== !0 && e[0].children.push({
-      component: m("vaadin-menu-bar-item", {
+    s.userInfo?.copilotProjectCannotLeaveLocalhost !== !0 && e[0].children.push({
+      component: f("vaadin-menu-bar-item", {
         label: "Toggle Command Window",
         hint: H.toggleCommandWindow,
         style: "toggle-spotlight"
       }),
       action: "spotlight"
-    }), a.active && (a.idePluginState?.supportedActions?.find((t) => t === "undo") && (e[0].children = [
+    }), s.active && (s.idePluginState?.supportedActions?.find((t) => t === "undo") && (e[0].children = [
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: "Undo",
           hint: H.undo
         }),
         action: "undo"
       },
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: "Redo",
           hint: H.redo
         }),
@@ -1571,20 +1568,20 @@ let _ = class extends D {
       ...e[0].children
     ]), e[0].children = [
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: "Tell us what you think"
           // Label used also in ScreenshotsIT.java
         }),
         action: "feedback"
       },
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: "Show welcome message"
         }),
         action: "welcome"
       },
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: "Show keyboard shortcuts"
         }),
         action: "shortcuts"
@@ -1593,14 +1590,14 @@ let _ = class extends D {
         text: "Settings",
         children: [
           {
-            component: m("vaadin-menu-bar-item", {
+            component: f("vaadin-menu-bar-item", {
               label: "Activation shortcut enabled",
               hint: b.isActivationShortcut() ? "✓" : void 0
             }),
             action: "shortcut"
           },
           {
-            component: m("vaadin-menu-bar-item", {
+            component: f("vaadin-menu-bar-item", {
               label: "Show animation when activating",
               hint: b.isActivationAnimation() ? "✓" : void 0
             }),
@@ -1616,13 +1613,13 @@ let _ = class extends D {
       ...e[0].children,
       { component: "hr" },
       {
-        component: m("vaadin-menu-bar-item", {
+        component: f("vaadin-menu-bar-item", {
           label: '<span class="deactivate">Deactivate</span><span class="activate">Activate</span> Copilot',
           hint: b.isActivationShortcut() ? H.toggleCopilot : void 0
         }),
         action: "copilot"
       }
-    ], e[0].children.unshift({ component: "copilot-activation-button-development-workflow" }), a.active && (e[0].children.unshift({ component: "hr" }), e[0].children.unshift({ component: "copilot-activation-button-user-info" })), this.items = e;
+    ], e[0].children.unshift({ component: "copilot-activation-button-development-workflow" }), s.active && (e[0].children.unshift({ component: "hr" }), e[0].children.unshift({ component: "copilot-activation-button-user-info" })), this.items = e;
   }
   render() {
     return l`
@@ -1651,7 +1648,7 @@ let _ = class extends D {
         this.activationBtnClicked();
         break;
       case "spotlight":
-        a.setSpotlightActive(!a.spotlightActive);
+        s.setSpotlightActive(!s.spotlightActive);
         break;
       case "shortcut":
         b.setActivationShortcut(!b.isActivationShortcut());
@@ -1669,7 +1666,7 @@ let _ = class extends D {
         });
         break;
       case "welcome":
-        a.setWelcomeActive(!0), a.setSpotlightActive(!0);
+        s.setWelcomeActive(!0), s.setSpotlightActive(!0);
         break;
       case "shortcuts":
         d.updatePanel("copilot-shortcuts-panel", {
@@ -1695,30 +1692,30 @@ _ = B([
   A("copilot-activation-button")
 ], _);
 var Ke = Object.defineProperty, Ze = Object.getOwnPropertyDescriptor, L = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? Ze(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? Ze(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && Ke(t, o, n), n;
 };
-const f = "resize-dir", V = "floating-resizing-active";
+const m = "resize-dir", V = "floating-resizing-active";
 let z = class extends D {
   constructor() {
     super(...arguments), this.panelTag = "", this.dockingItems = [
       {
-        component: m("vaadin-context-menu-item", {
+        component: f("vaadin-context-menu-item", {
           icon: c.dockRight,
           label: "Dock right"
         }),
         panel: "right"
       },
       {
-        component: m("vaadin-context-menu-item", {
+        component: f("vaadin-context-menu-item", {
           icon: c.dockLeft,
           label: "Dock left"
         }),
         panel: "left"
       },
       {
-        component: m("vaadin-context-menu-item", {
+        component: f("vaadin-context-menu-item", {
           icon: c.dockBottom,
           label: "Dock bottom"
         }),
@@ -1727,20 +1724,20 @@ let z = class extends D {
     ], this.floatingResizingStarted = !1, this.resizingInDrawerStarted = !1, this.toggling = !1, this.rectangleBeforeResizing = null, this.floatingResizeHandlerMouseMoveListener = (e) => {
       if (!this.panelInfo?.floating || this.floatingResizingStarted || !this.panelInfo?.expanded)
         return;
-      const t = this.getBoundingClientRect(), o = Math.abs(e.clientX - t.x), i = Math.abs(t.x + t.width - e.clientX), n = Math.abs(e.clientY - t.y), s = Math.abs(t.y + t.height - e.clientY), r = Number.parseInt(
+      const t = this.getBoundingClientRect(), o = Math.abs(e.clientX - t.x), i = Math.abs(t.x + t.width - e.clientX), n = Math.abs(e.clientY - t.y), a = Math.abs(t.y + t.height - e.clientY), r = Number.parseInt(
         window.getComputedStyle(this).getPropertyValue("--floating-offset-resize-threshold"),
         10
       );
       let h = "";
-      o < r ? n < r ? (h = "nw-resize", this.setAttribute(f, "top left")) : s < r ? (h = "sw-resize", this.setAttribute(f, "bottom left")) : (h = "col-resize", this.setAttribute(f, "left")) : i < r ? n < r ? (h = "ne-resize", this.setAttribute(f, "top right")) : s < r ? (h = "se-resize", this.setAttribute(f, "bottom right")) : (h = "col-resize", this.setAttribute(f, "right")) : s < r ? (h = "row-resize", this.setAttribute(f, "bottom")) : n < r && (h = "row-resize", this.setAttribute(f, "top")), h !== "" ? (this.rectangleBeforeResizing = this.getBoundingClientRect(), this.style.setProperty("--resize-cursor", h)) : (this.style.removeProperty("--resize-cursor"), this.removeAttribute(f)), this.toggleAttribute(V, h !== "");
+      o < r ? n < r ? (h = "nw-resize", this.setAttribute(m, "top left")) : a < r ? (h = "sw-resize", this.setAttribute(m, "bottom left")) : (h = "col-resize", this.setAttribute(m, "left")) : i < r ? n < r ? (h = "ne-resize", this.setAttribute(m, "top right")) : a < r ? (h = "se-resize", this.setAttribute(m, "bottom right")) : (h = "col-resize", this.setAttribute(m, "right")) : a < r ? (h = "row-resize", this.setAttribute(m, "bottom")) : n < r && (h = "row-resize", this.setAttribute(m, "top")), h !== "" ? (this.rectangleBeforeResizing = this.getBoundingClientRect(), this.style.setProperty("--resize-cursor", h)) : (this.style.removeProperty("--resize-cursor"), this.removeAttribute(m)), this.toggleAttribute(V, h !== "");
     }, this.floatingResizingMouseDownListener = (e) => {
       if (!this.hasAttribute(V) || e.button !== 0)
         return;
       e.stopPropagation(), e.preventDefault(), x.anchorLeftTop(this), this.floatingResizingStarted = !0, this.toggleAttribute("resizing", !0);
       const t = this.getResizeDirections(), { clientX: o, clientY: i } = e;
-      (t.includes("top") || t.includes("bottom")) && this.style.setProperty("--section-height", null), t.forEach((n) => this.setResizePosition(n, o, i)), a.setSectionPanelResizing(!0);
+      (t.includes("top") || t.includes("bottom")) && this.style.setProperty("--section-height", null), t.forEach((n) => this.setResizePosition(n, o, i)), s.setSectionPanelResizing(!0);
     }, this.floatingResizingMouseLeaveListener = () => {
-      this.panelInfo?.floating && (this.floatingResizingStarted || (this.removeAttribute("resizing"), this.removeAttribute(V), this.removeAttribute("dragging"), this.style.removeProperty("--resize-cursor"), this.removeAttribute(f)));
+      this.panelInfo?.floating && (this.floatingResizingStarted || (this.removeAttribute("resizing"), this.removeAttribute(V), this.removeAttribute("dragging"), this.style.removeProperty("--resize-cursor"), this.removeAttribute(m)));
     }, this.floatingResizingMouseMoveListener = (e) => {
       if (!this.panelInfo?.floating || !this.floatingResizingStarted)
         return;
@@ -1749,13 +1746,13 @@ let z = class extends D {
       t.forEach((n) => this.setResizePosition(n, o, i));
     }, this.setFloatingResizeDirectionProps = (e, t, o, i) => {
       o && o > Number.parseFloat(window.getComputedStyle(this).getPropertyValue("--min-width")) && (this.style.setProperty(`--${e}`, `${t}px`), this.style.setProperty("width", `${o}px`));
-      const n = window.getComputedStyle(this), s = Number.parseFloat(n.getPropertyValue("--header-height")), r = Number.parseFloat(n.getPropertyValue("--floating-offset-resize-threshold")) / 2;
-      i && i > s + r && (this.style.setProperty(`--${e}`, `${t}px`), this.style.setProperty("height", `${i}px`), this.container.style.setProperty("margin-top", "calc(var(--floating-offset-resize-threshold) / 4)"), this.container.style.height = `calc(${i}px - var(--floating-offset-resize-threshold) / 2)`);
+      const n = window.getComputedStyle(this), a = Number.parseFloat(n.getPropertyValue("--header-height")), r = Number.parseFloat(n.getPropertyValue("--floating-offset-resize-threshold")) / 2;
+      i && i > a + r && (this.style.setProperty(`--${e}`, `${t}px`), this.style.setProperty("height", `${i}px`), this.container.style.setProperty("margin-top", "calc(var(--floating-offset-resize-threshold) / 4)"), this.container.style.height = `calc(${i}px - var(--floating-offset-resize-threshold) / 2)`);
     }, this.floatingResizingMouseUpListener = (e) => {
       if (!this.floatingResizingStarted || !this.panelInfo?.floating)
         return;
-      e.stopPropagation(), e.preventDefault(), this.floatingResizingStarted = !1, a.setSectionPanelResizing(!1);
-      const { width: t, height: o } = this.getBoundingClientRect(), { left: i, top: n, bottom: s, right: r } = x.anchor(this), h = window.getComputedStyle(this.container), g = Number.parseInt(h.borderTopWidth, 10), v = Number.parseInt(h.borderTopWidth, 10);
+      e.stopPropagation(), e.preventDefault(), this.floatingResizingStarted = !1, s.setSectionPanelResizing(!1);
+      const { width: t, height: o } = this.getBoundingClientRect(), { left: i, top: n, bottom: a, right: r } = x.anchor(this), h = window.getComputedStyle(this.container), g = Number.parseInt(h.borderTopWidth, 10), v = Number.parseInt(h.borderTopWidth, 10);
       d.updatePanel(this.panelInfo.tag, {
         width: t,
         height: o - (g + v),
@@ -1763,7 +1760,7 @@ let z = class extends D {
           ...this.panelInfo.floatingPosition,
           left: i,
           top: n,
-          bottom: s,
+          bottom: a,
           right: r
         }
       }), this.style.removeProperty("width"), this.style.removeProperty("height"), this.container.style.removeProperty("height"), this.container.style.removeProperty("margin-top"), this.setCssSizePositionProperties(), this.toggleAttribute("dragging", !1);
@@ -1787,25 +1784,25 @@ let z = class extends D {
     }, this.contentAreaMouseDownListener = () => {
       d.bringToFront(this.panelInfo.tag);
     }, this.documentMouseUpEventListener = () => {
-      document.removeEventListener("mousemove", this.draggingEventListener), this.panelInfo?.floating && (this.toggleAttribute("dragging", !1), a.setSectionPanelDragging(!1));
+      document.removeEventListener("mousemove", this.draggingEventListener), this.panelInfo?.floating && (this.toggleAttribute("dragging", !1), s.setSectionPanelDragging(!1));
     }, this.panelHeaderMouseDownEventListener = (e) => {
-      e.button === 0 && (d.bringToFront(this.panelInfo.tag), !this.hasAttribute(f) && (e.target instanceof HTMLButtonElement && e.target.getAttribute("part") === "title-button" ? this.startDraggingDebounce(e) : this.startDragging(e)));
+      e.button === 0 && (d.bringToFront(this.panelInfo.tag), !this.hasAttribute(m) && (e.target instanceof HTMLButtonElement && e.target.getAttribute("part") === "title-button" ? this.startDraggingDebounce(e) : this.startDragging(e)));
     }, this.panelHeaderMouseUpEventListener = (e) => {
       e.button === 0 && this.startDraggingDebounce.clear();
     }, this.startDragging = (e) => {
-      x.draggingStarts(this, e), document.addEventListener("mousemove", this.draggingEventListener), a.setSectionPanelDragging(!0), this.panelInfo?.floating ? this.toggleAttribute("dragging", !0) : this.parentElement.sectionPanelDraggingStarted(this, e), e.preventDefault(), e.stopPropagation();
+      x.draggingStarts(this, e), document.addEventListener("mousemove", this.draggingEventListener), s.setSectionPanelDragging(!0), this.panelInfo?.floating ? this.toggleAttribute("dragging", !0) : this.parentElement.sectionPanelDraggingStarted(this, e), e.preventDefault(), e.stopPropagation();
     }, this.startDraggingDebounce = se(this.startDragging, 200), this.draggingEventListener = (e) => {
       const t = x.dragging(this, e);
       if (this.panelInfo?.floating && this.panelInfo?.floatingPosition) {
         e.preventDefault();
-        const { left: o, top: i, bottom: n, right: s } = t;
+        const { left: o, top: i, bottom: n, right: a } = t;
         d.updatePanel(this.panelInfo.tag, {
           floatingPosition: {
             ...this.panelInfo.floatingPosition,
             left: o,
             top: i,
             bottom: n,
-            right: s
+            right: a
           }
         });
       }
@@ -1840,10 +1837,10 @@ let z = class extends D {
           if (this.panelInfo.floatingPosition)
             t = this.panelInfo.floatingPosition;
           else {
-            const { left: n, top: s } = this.getBoundingClientRect();
+            const { left: n, top: a } = this.getBoundingClientRect();
             t = {
               left: n,
-              top: s
+              top: a
             };
           }
           let o = this.panelInfo?.height;
@@ -1897,7 +1894,7 @@ let z = class extends D {
           color: var(--color-high-contrast);
           display: flex;
           flex: none;
-          font: var(--font-small-bold);
+          font: var(--font-small-medium);
           justify-content: space-between;
           min-width: 100%;
           user-select: none;
@@ -2062,7 +2059,7 @@ let z = class extends D {
 
         [part='title'] button {
           color: var(--color-high-contrast);
-          font: var(--font-xsmall-strong);
+          font: var(--font-xsmall-semibold);
           width: auto;
         }
 
@@ -2141,12 +2138,12 @@ let z = class extends D {
         this.toggleAttribute(I, e?.tag === this.panelTag && e?.floating);
       }
     ), this.addEventListener("mouseenter", this.sectionPanelMouseEnterListener), document.addEventListener("mousemove", this.resizeInDrawerMouseMoveListener), document.addEventListener("mouseup", this.resizeInDrawerMouseUpListener), this.reaction(
-      () => a.operationInProgress,
+      () => s.operationInProgress,
       () => {
         requestAnimationFrame(() => {
           this.toggleAttribute(
             "hiding-while-drag-and-drop",
-            a.operationInProgress === q.DragAndDrop && this.panelInfo?.floating && !this.panelInfo.showWhileDragging
+            s.operationInProgress === q.DragAndDrop && this.panelInfo?.floating && !this.panelInfo.showWhileDragging
           );
         });
       }
@@ -2162,7 +2159,7 @@ let z = class extends D {
     super.disconnectedCallback(), this.removeEventListener("mouseenter", this.sectionPanelMouseEnterListener), this.drawerResizeElement.removeEventListener("mousedown", this.resizeInDrawerMouseDownListener), document.removeEventListener("mousemove", this.resizeInDrawerMouseMoveListener), document.removeEventListener("mouseup", this.resizeInDrawerMouseUpListener), this.removeEventListener("mousemove", this.floatingResizeHandlerMouseMoveListener), this.removeEventListener("mousedown", this.floatingResizingMouseDownListener), document.removeEventListener("mousemove", this.floatingResizingMouseMoveListener), document.removeEventListener("mouseup", this.floatingResizingMouseUpListener);
   }
   setResizePosition(e, t, o) {
-    const i = this.rectangleBeforeResizing, n = 0, s = window.innerWidth, r = 0, h = window.innerHeight, g = Math.max(n, Math.min(s, t)), v = Math.max(r, Math.min(h, o));
+    const i = this.rectangleBeforeResizing, n = 0, a = window.innerWidth, r = 0, h = window.innerHeight, g = Math.max(n, Math.min(a, t)), v = Math.max(r, Math.min(h, o));
     if (e === "left")
       this.setFloatingResizeDirectionProps(
         "left",
@@ -2251,7 +2248,7 @@ let z = class extends D {
     this.panelInfo.floating && this.changePanelFloating(e);
   }
   getResizeDirections() {
-    const e = this.getAttribute(f);
+    const e = this.getAttribute(m);
     return e ? e.split(" ") : [];
   }
 };
@@ -2277,15 +2274,15 @@ z = L([
   A("copilot-section-panel-wrapper")
 ], z);
 function Qe(e) {
-  a.setOperationWaitsHmrUpdate(e, 3e4);
+  s.setOperationWaitsHmrUpdate(e, 3e4);
 }
 u.on("undoRedo", (e) => {
   const o = { files: e.detail.files ?? ze(), uiId: Ae() }, i = e.detail.undo ? "copilot-plugin-undo" : "copilot-plugin-redo", n = e.detail.undo ? "undo" : "redo";
   re(n), Qe(q.RedoUndo), u.send(i, o);
 });
 var et = Object.defineProperty, tt = Object.getOwnPropertyDescriptor, it = (e, t, o, i) => {
-  for (var n = i > 1 ? void 0 : i ? tt(t, o) : t, s = e.length - 1, r; s >= 0; s--)
-    (r = e[s]) && (n = (i ? r(t, o, n) : r(n)) || n);
+  for (var n = i > 1 ? void 0 : i ? tt(t, o) : t, a = e.length - 1, r; a >= 0; a--)
+    (r = e[a]) && (n = (i ? r(t, o, n) : r(n)) || n);
   return i && n && et(t, o, n), n;
 };
 let ie = class extends D {
@@ -2580,7 +2577,7 @@ let ie = class extends D {
   }
   render() {
     return l`<div class="notification-tray">
-      ${a.notifications.map((e) => this.renderNotification(e))}
+      ${s.notifications.map((e) => this.renderNotification(e))}
     </div>`;
   }
   renderNotification(e) {
@@ -2636,10 +2633,10 @@ u.on("vite-after-update", () => {
 });
 const ne = window?.Vaadin?.connectionState?.stateChangeListeners;
 ne ? ne.add((e, t) => {
-  e === "loading" && t === "connected" && a.active && W();
+  e === "loading" && t === "connected" && s.active && W();
 }) : console.warn("Unable to add listener for connection state changes");
 u.on("copilot-plugin-state", (e) => {
-  a.setIdePluginState(e.detail), e.detail.active && re("plugin-active", { pluginVersion: e.detail.version, ide: e.detail.ide }), e.preventDefault();
+  s.setIdePluginState(e.detail), e.detail.active && re("plugin-active", { pluginVersion: e.detail.version, ide: e.detail.ide }), e.preventDefault();
 });
 u.on("location-changed", (e) => {
   W();

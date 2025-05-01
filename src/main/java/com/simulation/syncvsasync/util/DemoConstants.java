@@ -10,5 +10,6 @@ public class DemoConstants {
     public static final String THREAD_NAME = "Thread name: {}";
     public static final String THREADGROUP = "ThreadGroup: {}";
     public static final String THREAD_STATE = "Thread state: {}";
+    public static final String PARAMETER_SIZE = "size";
 
 }

@@ -1,7 +1,7 @@
-import { j as M, a1 as T, a2 as w, Y as p, x as l, $ as c, a3 as S, U as L, M as D, b as R, a4 as C, n as y } from "./copilot-Bsbv-mVp.js";
-import { r as $ } from "./state-BzwXpuSR.js";
-import { B as I } from "./base-panel-BdeqExUd.js";
-import { i as n } from "./icons-CMypsfpf.js";
+import { j as M, a1 as T, a2 as w, Y as p, x as l, $ as c, a3 as S, U as L, M as D, b as R, a4 as C, n as y } from "./copilot-CrQlGUim.js";
+import { r as $ } from "./state-CpHuw1-w.js";
+import { B as I } from "./base-panel-BPFs0JUr.js";
+import { i as n } from "./icons-CenXfqbT.js";
 const q = "copilot-log-panel{padding:var(--space-100);font:var(--font-xsmall);display:flex;flex-direction:column;gap:var(--space-50);overflow-y:auto;max-width:100vw}copilot-log-panel .row{display:flex;align-items:flex-start;padding:var(--space-50) var(--space-100);border-radius:var(--radius-2);gap:var(--space-100)}copilot-log-panel .row.information{background-color:var(--blue-50)}copilot-log-panel .row.warning{background-color:var(--yellow-50)}copilot-log-panel .row.error{background-color:var(--red-50)}copilot-log-panel .type{margin-top:var(--space-25)}copilot-log-panel .type.error{color:var(--red)}copilot-log-panel .type.warning{color:var(--yellow)}copilot-log-panel .type.info{color:var(--color)}copilot-log-panel .message{display:flex;flex-direction:column;flex-grow:1;gap:var(--space-25);overflow:hidden}copilot-log-panel .message>*:not(.expanded){white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}copilot-log-panel .message>.expanded{overflow-wrap:break-word}copilot-log-panel .firstrow{display:flex;align-items:baseline;gap:.5em;flex-direction:column}copilot-log-panel .firstrowmessage{width:100%;overflow:hidden;text-overflow:ellipsis}copilot-log-panel button{padding:0;border:0;background:transparent}copilot-log-panel svg{height:12px;width:12px}copilot-log-panel .secondrow,copilot-log-panel .timestamp{font-size:var(--font-size-0);line-height:var(--line-height-1)}copilot-log-panel .expand span{height:12px;width:12px}";
 var A = Object.defineProperty, B = Object.getOwnPropertyDescriptor, h = (e, t, a, o) => {
   for (var s = o > 1 ? void 0 : o ? B(t, a) : t, d = e.length - 1, i; d >= 0; d--)

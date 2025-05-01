@@ -1,7 +1,7 @@
-import { a as P, a5 as H, z as C, U, D as N, j as g, x as d, a6 as I, E as j, H as B, G as L, _ as O, $ as q, M as J, b as M, n as T } from "./copilot-Bsbv-mVp.js";
-import { r as A } from "./state-BzwXpuSR.js";
-import { B as V } from "./base-panel-BdeqExUd.js";
-import { i as y } from "./icons-CMypsfpf.js";
+import { a as P, a5 as H, z as C, U, D as N, j as g, x as d, a6 as I, E as j, H as B, G as L, _ as O, $ as q, M as J, b as M, n as T } from "./copilot-CrQlGUim.js";
+import { r as A } from "./state-CpHuw1-w.js";
+import { B as V } from "./base-panel-BPFs0JUr.js";
+import { i as y } from "./icons-CenXfqbT.js";
 const W = "copilot-info-panel{--dev-tools-red-color: red;--dev-tools-grey-color: gray;--dev-tools-green-color: green;position:relative}copilot-info-panel div.info-tray{display:flex;flex-direction:column;gap:10px}copilot-info-panel vaadin-button{margin-inline:var(--lumo-space-l)}copilot-info-panel dl{display:grid;grid-template-columns:auto auto;gap:0;margin:var(--space-100) var(--space-50);font:var(--font-xsmall)}copilot-info-panel dl>dt,copilot-info-panel dl>dd{padding:3px 10px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}copilot-info-panel dd.live-reload-status>span{overflow:hidden;text-overflow:ellipsis;display:block;color:var(--status-color)}copilot-info-panel dd span.hidden{display:none}copilot-info-panel dd span.true{color:var(--dev-tools-green-color);font-size:large}copilot-info-panel dd span.false{color:var(--dev-tools-red-color);font-size:large}copilot-info-panel code{white-space:nowrap;-webkit-user-select:all;user-select:all}copilot-info-panel .checks{display:inline-grid;grid-template-columns:auto 1fr;gap:var(--space-50)}copilot-info-panel span.hint{font-size:var(--font-size-0);background:var(--gray-50);padding:var(--space-75);border-radius:var(--radius-2)}";
 var D, E;
 function _() {

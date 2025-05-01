@@ -27,6 +27,7 @@ import '@vaadin/combo-box/theme/lumo/vaadin-combo-box.js';
 import '@vaadin/item/theme/lumo/vaadin-item.js';
 import '@vaadin/dialog/theme/lumo/vaadin-dialog.js';
 import '@vaadin/multi-select-combo-box/theme/lumo/vaadin-multi-select-combo-box.js';
+import '@vaadin/radio-group/theme/lumo/vaadin-radio-group.js';
 import '@vaadin/icons/vaadin-iconset.js';
 import '@vaadin/icon/vaadin-icon.js';
 import './vaadin-featureflags.js';
