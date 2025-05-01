@@ -11,5 +11,6 @@ public class DemoConstants {
     public static final String THREADGROUP = "ThreadGroup: {}";
     public static final String THREAD_STATE = "Thread state: {}";
     public static final String PARAMETER_SIZE = "size";
+    public static final String FRONTEND_IMAGES_CUSTOM = "frontend/images/custom-images/";
 
 }
