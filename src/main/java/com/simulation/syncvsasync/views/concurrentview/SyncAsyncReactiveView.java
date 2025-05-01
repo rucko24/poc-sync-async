@@ -15,7 +15,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.progressbar.ProgressBar;
@@ -29,12 +28,9 @@ import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -117,18 +113,7 @@ public class SyncAsyncReactiveView extends Div implements NotificationsUtils, Be
 
         final var divSyncComboAsyncCombo = new Div(syncComboBox, asyncComboBoxWithCompletableFuture);
 
-        final Span span = new Span(LocalTime.now().toString());
-        Flux.interval(Duration.ofSeconds(1))
-                .subscribeOn(Schedulers.boundedElastic())
-                .subscribe(noOps -> {
-                    span.getUI().ifPresent(ui -> {
-                        ui.access(() -> {
-                            span.setText(LocalTime.now().toString());
-                        });
-                    });
-                });
-
-        this.add(span, divSyncComboAsyncCombo, verticalDiv, progressBar);
+        this.add(divSyncComboAsyncCombo, verticalDiv, progressBar);
 
         this.initSyncFrecuency();
     }
