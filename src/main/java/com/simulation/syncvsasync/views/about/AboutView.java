@@ -36,6 +36,7 @@ public class AboutView extends VerticalLayout {
         img.addClickListener(imageClickEvent -> {
             UI.getCurrent().getPage().open(LOOM_URL, TARGET_BLANK);
         });
+        img.getStyle().setCursor("pointer");
         super.add(img, sourceOfThePoc(), row());
 
         setJustifyContentMode(JustifyContentMode.CENTER);
